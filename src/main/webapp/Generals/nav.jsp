@@ -7,7 +7,7 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="home.html" class="nav-link">Inicio</a></li>
+                <li class="nav-item active"><a href="${pageContext.request.contextPath}/ServletControlador?accion=home" class="nav-link">Inicio</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tienda</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
