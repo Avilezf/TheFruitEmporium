@@ -14,36 +14,74 @@ public class Usuario {
     private int idUsuario;
     private String nombre;
     private String apellido;
-    private String clave;
+    private String direccion;
+    private String pais;
+    private String ciudad;
+    private String celular;
     private String email;
+    private String ip;
+    private String add;
     //private String rol;
 
     public Usuario() {
     }
-    
-    public Usuario(String clave, String email) {
-        this.nombre = "";
-        this.apellido = "";
-        this.clave = clave;
-        this.email = email;
-        //this.rol = rol;
-    }
 
-    public Usuario(String nombre, String apellido, String clave, String email) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.clave = clave;
-        this.email = email;
-        //this.rol = rol;
-    }
-
-    public Usuario(int idUsuario, String nombre, String apellido, String clave, String email) {
+    public Usuario(int idUsuario, String nombre, String apellido, String direccion, String pais, String ciudad, String celular, String email, String ip, String add) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.clave = clave;
+        this.direccion = direccion;
+        this.pais = pais;
+        this.ciudad = ciudad;
+        this.celular = celular;
         this.email = email;
-        //this.rol = rol;
+        this.add = add;
+        this.ip = ip;
+    }
+
+    public Usuario(String nombre, String apellido, String direccion, String pais, String ciudad, String celular, String email) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.pais = pais;
+        this.ciudad = ciudad;
+        this.celular = celular;
+        this.email = email;
+        this.add = add;
+    }
+
+    public Usuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+        this.email = "";
+        this.nombre = "";
+        this.apellido = "";
+        this.direccion = "";
+        this.pais = "";
+        this.ciudad = "";
+        this.celular = "";
+        this.add = "";
+    }
+    
+    
+
+    public Usuario(String ip) {
+        this.email = "";
+        this.nombre = "";
+        this.apellido = "";
+        this.direccion = "";
+        this.pais = "";
+        this.ciudad = "";
+        this.celular = "";
+        this.add = "";
+        this.ip = ip;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public int getIdUsuario() {
@@ -70,13 +108,28 @@ public class Usuario {
         this.apellido = apellido;
     }
 
-
-    public String getClave() {
-        return clave;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
     public String getEmail() {
@@ -87,13 +140,24 @@ public class Usuario {
         this.email = email;
     }
 
-//    public String getRol() {
-//        return rol;
-//    }
-//
-//    public void setRol(String rol) {
-//        this.rol = rol;
-//    }
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getAdd() {
+        return add;
+    }
+
+    public void setAdd(String add) {
+        this.add = add;
+    }
+    
     
     
 }
+    
+    

@@ -118,11 +118,11 @@ public class ServletControlador extends HttpServlet {
         if (accion != null) {
             switch (accion) {
                 case "insert":
-                    this.insertUsuario(request, response);
+                   // this.insertUsuario(request, response);
                     break;
 
                 case "login":
-                    this.loginUsuario(request, response);
+                    //this.loginUsuario(request, response);
                     break;
 
 //
@@ -246,57 +246,57 @@ public class ServletControlador extends HttpServlet {
         }
     }
 
-    private void insertUsuario(HttpServletRequest request, HttpServletResponse response) {
-        String email = request.getParameter("emailregister");
-        String password = request.getParameter("passregister");
-
-        Usuario usuario = new Usuario(password, email);
-        try {
-            boolean insert = new UsuarioDAOJDBC().insertar(usuario);
-            System.out.println("Resultado " + insert);
-
-            String jspdir = "/WEB-INF/Pages/StudentPages/Home/student.jsp";
-            request.getRequestDispatcher(jspdir).forward(request, response);
-
-        } catch (IllegalAccessException | InstantiationException | ServletException | IOException ex) {
-            Logger.getLogger(ServletControlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void loginUsuario(HttpServletRequest request, HttpServletResponse response) {
-        List<Usuario> usr = null;
-        try {
-            try {
-                usr = new UsuarioDAOJDBC().listaUsuario();
-
-                String msg = "CONTRASEÑA INCORRECTA O MAIL NO EXISTE";
-                String email = request.getParameter("mail");
-                String password = request.getParameter("pass");
-                boolean sw = false;
-
-                for (Usuario usuario : usr) {
-                    if (usuario.getEmail().equals(email)) {
-                        if (usuario.getClave().equals(password)) {
-                            String jspdir = "/WEB-INF/Pages/StudentPages/Home/student.jsp";
-                            request.getRequestDispatcher(jspdir).forward(request, response);
-                            sw = true;
-                        }
-                    }
-                }
-
-                if (!sw) {
-                    String jspdir2 = "/WEB-INF/Pages/Login/login.jsp";
-                    request.setAttribute("msg", msg);
-                    request.getRequestDispatcher(jspdir2).forward(request, response);
-                }
-
-            } catch (ClassNotFoundException | InstantiationException | ServletException | IOException ex) {
-                Logger.getLogger(ServletControlador.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(ServletControlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
+//    private void insertUsuario(HttpServletRequest request, HttpServletResponse response) {
+//        String email = request.getParameter("emailregister");
+//        String password = request.getParameter("passregister");
+//
+//        Usuario usuario = new Usuario(password, email);
+//        try {
+//            boolean insert = new UsuarioDAOJDBC().insertar(usuario);
+//            System.out.println("Resultado " + insert);
+//
+//            String jspdir = "/WEB-INF/Pages/StudentPages/Home/student.jsp";
+//            request.getRequestDispatcher(jspdir).forward(request, response);
+//
+//        } catch (IllegalAccessException | InstantiationException | ServletException | IOException ex) {
+//            Logger.getLogger(ServletControlador.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+//
+//    private void loginUsuario(HttpServletRequest request, HttpServletResponse response) {
+//        List<Usuario> usr = null;
+//        try {
+//            try {
+//                usr = new UsuarioDAOJDBC().listaUsuario();
+//
+//                String msg = "CONTRASEÑA INCORRECTA O MAIL NO EXISTE";
+//                String email = request.getParameter("mail");
+//                String password = request.getParameter("pass");
+//                boolean sw = false;
+//
+//                for (Usuario usuario : usr) {
+//                    if (usuario.getEmail().equals(email)) {
+//                        if (usuario.getClave().equals(password)) {
+//                            String jspdir = "/WEB-INF/Pages/StudentPages/Home/student.jsp";
+//                            request.getRequestDispatcher(jspdir).forward(request, response);
+//                            sw = true;
+//                        }
+//                    }
+//                }
+//
+//                if (!sw) {
+//                    String jspdir2 = "/WEB-INF/Pages/Login/login.jsp";
+//                    request.setAttribute("msg", msg);
+//                    request.getRequestDispatcher(jspdir2).forward(request, response);
+//                }
+//
+//            } catch (ClassNotFoundException | InstantiationException | ServletException | IOException ex) {
+//                Logger.getLogger(ServletControlador.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        } catch (IllegalAccessException ex) {
+//            Logger.getLogger(ServletControlador.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 
 }

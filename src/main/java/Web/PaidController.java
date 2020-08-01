@@ -1,0 +1,173 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Web;
+
+import Datos.PedidoDAO;
+import Datos.PedidosProductosDAO;
+import Datos.ProductoDAO;
+import Datos.UsuarioDAOJDBC;
+import Dominio.Pedido;
+import Dominio.PedidosProductos;
+import Dominio.Producto;
+import Dominio.Usuario;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ *
+ * @author CL SMA
+ */
+@WebServlet("/PaidController")
+public class PaidController extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String accion = request.getParameter("accion");
+        String path = ""; //Dirección para llegar al jsp
+        if (accion != null) {
+            try {
+                String ip = request.getRemoteHost();
+
+                if (ip == null) {
+                    ip = "192.168.1.11";
+                }
+
+                boolean sw2 = new UsuarioDAOJDBC().ip(ip);
+                if (sw2) {
+                    ActualUser(request, response, ip, path, accion);
+                } else {
+                    this.accionDefault(request, response, path, accion);
+                }
+
+            } catch (InstantiationException ex) {
+                Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            this.accionDefault(request, response, path, accion);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String accion = request.getParameter("accion");
+        String path = ""; //Dirección para llegar al jsp
+        if (accion != null) {
+            switch (accion) {
+                case "insert":
+
+                    break;
+
+                case "login":
+
+                    break;
+            }
+        } else {
+            this.accionDefault(request, response, path, accion);
+        }
+    }
+
+    private void accionDefault(HttpServletRequest request, HttpServletResponse response, String path, String accion) throws IOException, ServletException {
+        path = "/" + accion + ".jsp";
+        request.getRequestDispatcher(path).forward(request, response);
+    }
+
+    private void ActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, String accion) throws InstantiationException, IllegalAccessException, IOException, ServletException, ClassNotFoundException {
+        //Usar usuario existente
+        Usuario temp = new Usuario(ip);
+        Usuario usuario = new UsuarioDAOJDBC().id(temp);
+        Date date = new Date();
+        String fecha = date.toString();
+
+        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha)); //busca el id del usuario para verificar si tiene pedidos
+
+        if (pedido.getEstado() == 0) {//Si es igual a 0, el pedido o está cancelado
+            this.accionDefault(request, response, path, accion);
+        } else {
+            //El pedido no es nuevo
+
+            if (accion.equals("delete")) {
+                //Por si es eliminar
+                int ide = Integer.parseInt(request.getParameter("idProducto"));
+                int ide2 = Integer.parseInt(request.getParameter("numPedido"));
+                PedidosProductos PP = new PedidosProductos(ide2, ide, 0);
+                boolean prod = new PedidosProductosDAO().verificar2(PP);//Se verifica si el producto está en el carro
+                if (prod) {
+                    //Si el producto ya estaba en el carrito
+                    PedidosProductos PedidosProductos = new PedidosProductosDAO().buscar(PP);
+                    //Update
+                    boolean estado = new PedidosProductosDAO().delete(PedidosProductos);
+                    if (estado) {
+                        pedido.setCarrito(pedido.getCarrito() - 1);
+                        boolean ok = new PedidoDAO().actualizar(pedido);
+                        if (ok) {
+                            this.cart(request, response, path, pedido, usuario);
+                        }
+
+                    }
+
+                }
+
+            } else {
+                this.cart(request, response, path, pedido, usuario);
+            }
+
+        }
+
+    }
+
+    private void cart(HttpServletRequest request, HttpServletResponse response, String path, Pedido pedido, Usuario usuario) throws IOException, ServletException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+
+        List<Integer> cants = new PedidosProductosDAO().listarCants(new Pedido(pedido.getIdPedido()));
+        List<Integer> ids = new PedidosProductosDAO().listarIds(new Pedido(pedido.getIdPedido()));
+        List<Producto> productos = new ArrayList<>();
+        List<Integer> precios = new ArrayList<>();
+        Producto producto;
+        for (Integer id : ids) {
+            producto = new ProductoDAO().buscarId(id);
+            productos.add(producto);
+        }
+        int sum = 0;
+        for (int i = 0; i < productos.size(); i++) {
+            int mul = cants.get(i) * productos.get(i).getPrecio();
+            precios.add(mul);
+            sum = sum + mul;
+        }
+        int envio = sum + 4000;
+        int num = productos.size() - 1;
+        if (num < 0) {
+            path = "/home.jsp";
+            request.getRequestDispatcher(path).forward(request, response);
+        } else {
+            request.setAttribute("carrito", pedido.getCarrito());
+            request.setAttribute("sum", sum);
+            request.setAttribute("productos", productos);
+            request.setAttribute("precios", precios);
+            request.setAttribute("pedido", pedido.getIdPedido());
+            request.setAttribute("usuario", usuario.getIdUsuario());
+            request.setAttribute("envio", envio);
+            request.setAttribute("num", num);
+            request.setAttribute("cants", cants);
+            path = "/cart.jsp";
+            request.getRequestDispatcher(path).forward(request, response);
+        }
+
+    }
+
+}
