@@ -25,9 +25,10 @@ public class PedidoDAO {
     private static final String SQL_SELECT_BY_IDCLIENTE = "SELECT * FROM pedidos WHERE idcliente = ? ORDER BY idpedidos DESC LIMIT 1";
     private static final String SQL_INSERT = "INSERT INTO usuario(nombre, apellido, email, rol) " + " VALUES(?,?,?,?)";
     private static final String SQL_INSERT_USR = " INSERT INTO users(namusr, lasusr, maiusr, pasusr) " + "VALUES (?,?,?,?)";
-    private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha) " + "VALUES (?,?,?,?)";
+    private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha, subtotal, total) " + "VALUES (?,?,?,?,?,?)";
     private static final String SQL_UPDATE_ESTADO = "UPDATE pedido" + " SET estado=? WHERE idpedido=?";
     private static final String SQL_UPDATE_CARRITO = "UPDATE pedidos" + " SET carrito=? WHERE idpedidos=?";
+    private static final String SQL_UPDATE_ESTADO2 = "UPDATE pedidos" + " SET estado=?, subtotal=?, total=?, fecha=? WHERE idpedidos=?";
     private static final String SQL_DELETE = "DELETE FROM usuario WHERE id_usuario = ?";
 
 //    ORACLE    
@@ -104,9 +105,11 @@ public class PedidoDAO {
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_INSERT_PEDIDO);
             stmt.setInt(1, pedido.getIdCliente());
-            stmt.setInt(2, pedido.getEstado());
-            stmt.setInt(3, pedido.getCarrito());
+            stmt.setInt(2, 1);
+            stmt.setInt(3, 1);
             stmt.setString(4, pedido.getFecha());
+            stmt.setInt(5, pedido.getSubtotal());
+            stmt.setInt(6, pedido.getTotal());
 
             rows = stmt.executeUpdate();
             sw = true;
@@ -139,6 +142,42 @@ public class PedidoDAO {
             stmt = conn.prepareStatement(SQL_UPDATE_CARRITO);
             stmt.setInt(1, pedido.getCarrito());
             stmt.setInt(2, pedido.getIdPedido());
+
+            rows = stmt.executeUpdate();
+            
+            sw = true;
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
+    }
+    
+    public boolean actualizarEstado(Pedido pedido) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;//Registros modificados
+        boolean sw = false;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_UPDATE_ESTADO2);
+            stmt.setInt(1, pedido.getEstado());
+            stmt.setInt(2, pedido.getSubtotal());
+            stmt.setInt(3, pedido.getTotal());
+            stmt.setString(4, pedido.getFecha());
+            stmt.setInt(5, pedido.getIdPedido());
 
             rows = stmt.executeUpdate();
             
@@ -289,7 +328,49 @@ public class PedidoDAO {
                 String fecha = rs.getString("fecha");
                 int estado = rs.getInt("estado");
                 int carrito = rs.getInt("carrito");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito);
+                int subtotal = rs.getInt("subtotal");
+                int total = rs.getInt("total");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error NULO");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return pedido;
+    }
+    
+    public Pedido realId(Pedido pedido) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_BY_ID);
+            stmt.setInt(1, pedido.getIdPedido());
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idPedido = rs.getInt("idpedidos");
+                int idCliente = rs.getInt("idcliente");
+                String fecha = rs.getString("fecha");
+                int estado = rs.getInt("estado");
+                int carrito = rs.getInt("carrito");
+                int subtotal = rs.getInt("subtotal");
+                int total = rs.getInt("total");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total);
             }
 
         } catch (SQLException ex) {

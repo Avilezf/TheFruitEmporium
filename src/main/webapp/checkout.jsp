@@ -29,27 +29,7 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body class="goto-here">
-        <div class="py-1 bg-primary">
-            <div class="container">
-                <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
-                    <div class="col-lg-12 d-block">
-                        <div class="row d-flex">
-                            <div class="col-md pr-4 d-flex topper align-items-center">
-                                <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
-                                <span class="text">+ 1235 2355 98</span>
-                            </div>
-                            <div class="col-md pr-4 d-flex topper align-items-center">
-                                <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-                                <span class="text">youremail@email.com</span>
-                            </div>
-                            <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-                                <span class="text">3-5 Business days delivery &amp; Free Returns</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <%@include file="/Generals/upper.jsp"%>
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
@@ -64,70 +44,71 @@
             </div>
         </div>
 
-        <section class="ftco-section">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-7 ftco-animate">
-                        <form action="#" class="billing-form" method="POST"><!---- POST----->
-                            <h3 class="mb-4 billing-heading">Detalles de Pago</h3>
+        <section class="ftco-section"> 
+            <form action="${pageContext.request.contextPath}/PaidController?accion=buy" class="billing-form" method="POST"> 
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-7 ftco-animate">
+
+                            <h3 class="mb-4 billing-heading">Detalles de Pago: Pedido ${idpedido}</h3>
                             <div class="row align-items-end">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="firstname">Nombres</label>
-                                        <input type="text" class="form-control" value= "${usuario.getNombre()}" placeholder="">
+                                        <input name="nombre" id="nombre" type="text" class="form-control" value= "${usuario.getNombre()}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lastname">Apellidos</label>
-                                        <input type="text" class="form-control" value= "${usuario.getApellido()}" placeholder="">
+                                        <input name="apellido" id="apellido" type="text" class="form-control" value= "${usuario.getApellido()}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="country">País</label>
-                                        <input type="text" class="form-control" value= "${usuario.getPais()}" placeholder="">
+                                        <input name="pais" id="pais"  type="text" class="form-control" value= "${usuario.getPais()}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="streetaddress">Dirección</label>
-                                        <input type="text" class="form-control" value= "${usuario.getDireccion()}" placeholder="Ej: Cra 50 # 80 - 123">
+                                        <input name="direccion" id="direccion" type="text" class="form-control" value= "${usuario.getDireccion()}" placeholder="Ej: Cra 50 # 80 - 123" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" value= "${usuario.getAdd()}" placeholder="Ej: Apto 101, Casa 128, Conjunto Residencial">
+                                        <input name="add" id="add" type="text" class="form-control" value= "${usuario.getAdd()}" placeholder="Ej: Apto 101, Casa 128, Conjunto Residencial" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="towncity">Ciudad</label>
-                                        <input type="text" class="form-control" value= "${usuario.getCiudad()}" placeholder="">
+                                        <input name="ciudad" id="ciudad"  type="text" class="form-control" value= "${usuario.getCiudad()}" placeholder="" required>
                                     </div>
                                 </div>
-                                <!--
+
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="postcodezip">Postcode / ZIP *</label>
-                                        <input type="text" class="form-control" placeholder="">
+                                        <label for="id">Cédula</label>
+                                        <input name="cedula" id="cedula" type="text" class="form-control" placeholder="" required>
                                     </div>
                                 </div>
-                                -->
+
                                 <div class="w-100"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone">Celular</label>
-                                        <input type="text" class="form-control" value= "${usuario.getCelular()}" placeholder="">
+                                        <input name="celular" id="celular" type="text" class="form-control" value= "${usuario.getCelular()}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="emailaddress">Correo Electrónico</label>
-                                        <input type="text" class="form-control" value= "${usuario.getEmail()}" placeholder="">
+                                        <input name="email" id="email" type="text" class="form-control" value= "${usuario.getEmail()}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
@@ -139,141 +120,154 @@
                                             <label><input type="radio" name="optradio"> Ship to different address</label>
                                         </div>
                                     </div>
-                                    -->
+                                    -->    
+                                    <div class="checkbox">
+                                        <label><input name="yes" id="yes" type="checkbox" value="1" class="mr-2" required>Deseo actualizar mis datos</label>
+                                    </div>                                 
                                 </div>
                             </div>
-                        </form><!-- END -->
-                    </div>
-                    <div class="col-xl-5">
-                        <div class="row mt-5 pt-3">
-                            <div class="col-md-12 d-flex mb-5">
-                                <div class="cart-detail cart-total p-3 p-md-4">
-                                    <h3 class="billing-heading mb-4">Total en Compra</h3>
-                                    <p class="d-flex">
-                                        <span>Subtotal</span>
-                                        <span>&#36; ${subtotal}</span>
-                                    </p>
-                                    
-                                    <p class="d-flex">
-                                        <span>Envío</span>
-                                        <span>$ &nbsp; 4000</span>
-                                    </p>
-                                    <!--
-                                    <p class="d-flex">
-                                        <span>Discount</span>
-                                        <span>$3.00</span>
-                                    </p>
-                                    -->
-                                    <hr>
-                                    <p class="d-flex total-price">
-                                        <span>Total</span>
-                                        <span>&#36; ${total}</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="cart-detail p-3 p-md-4">
-                                    <h3 class="billing-heading mb-4">Método de Pago</h3>
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="radio">
-                                                <label><input type="radio" name="optradio" class="mr-2"> Transacción</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="radio">
-                                                <label><input type="radio" name="optradio" class="mr-2"> Pago por QR</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="radio">
-                                                <label><input type="radio" name="optradio" class="mr-2"> Nequi</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" value="" class="mr-2">he leído y acepto los términos y condiciones</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p><a href="#"class="btn btn-primary py-3 px-4">Pagar</a></p>
-                                </div>
-                            </div>
+                            <!-- END -->
                         </div>
-                    </div> <!-- .col-md-8 -->
+                        <div class="col-xl-5">
+                            <div class="row mt-5 pt-3">
+                                <div class="col-md-12 d-flex mb-5">
+                                    <div class="cart-detail cart-total p-3 p-md-4">
+                                        <h3 class="billing-heading mb-4">Total en Compra</h3>
+                                        <p class="d-flex">
+                                            <span>Subtotal</span>
+                                            <span>&#36; ${subtotal}</span>
+                                        </p>
+
+                                        <p class="d-flex">
+                                            <span>Envío</span>
+                                            <span>$ &nbsp; 4000</span>
+                                        </p>
+                                        <!--
+                                        <p class="d-flex">
+                                            <span>Discount</span>
+                                            <span>$3.00</span>
+                                        </p>
+                                        -->
+                                        <hr>
+                                        <p class="d-flex total-price">
+                                            <span>Total</span>
+                                            <span>&#36; ${total}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="cart-detail p-3 p-md-4">
+                                        <h3 class="billing-heading mb-4">Método de Pago</h3>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="radio">
+                                                    <label><input name="radio" id="radio" type="radio" name="optradio" value="0" class="mr-2"> Transacción</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="radio">
+                                                    <label><input name="radio" id="radio" type="radio" name="optradio" value="1" class="mr-2"> Pago por QR</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="radio">
+                                                    <label><input name="radio" id="radio" type="radio" name="optradio" value="2" class="mr-2"> Nequi</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <div class="checkbox">
+                                                    <label><input name="tyc" id="tyc" type="checkbox" value="1" class="mr-2" required="">he leído y acepto los términos y condiciones</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input name="subtotal" id="subtotal" type="hidden" value="${subtotal}">
+                                        <input name="total" id="total" type="hidden" value="${total}">
+                                        <input name="idPedido" id="idPedido" type="hidden" value="${idpedido}">
+                                        <p><button type="submit" class="btn btn-primary py-3 px-4">Pagar</button></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- .col-md-8 -->
+                    </div>
                 </div>
-            </div>
-            <!-- SUSCRIPCIÓN -->
-            <%@include file="/Generals/subscribe.jsp" %>
-
-            <!-- Footer -->
-            <%@include file="/Generals/footer.jsp" %>
+            </form> <!---- POST----->
+        </section>
 
 
 
-            <!-- loader -->
-            <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+        <!-- SUSCRIPCIÓN -->
+        <%@include file="/Generals/subscribe.jsp" %>
+
+        <!-- Footer -->
+        <%@include file="/Generals/footer.jsp" %>
 
 
-            <script src="js/jquery.min.js"></script>
-            <script src="js/jquery-migrate-3.0.1.min.js"></script>
-            <script src="js/popper.min.js"></script>
-            <script src="js/bootstrap.min.js"></script>
-            <script src="js/jquery.easing.1.3.js"></script>
-            <script src="js/jquery.waypoints.min.js"></script>
-            <script src="js/jquery.stellar.min.js"></script>
-            <script src="js/owl.carousel.min.js"></script>
-            <script src="js/jquery.magnific-popup.min.js"></script>
-            <script src="js/aos.js"></script>
-            <script src="js/jquery.animateNumber.min.js"></script>
-            <script src="js/bootstrap-datepicker.js"></script>
-            <script src="js/scrollax.min.js"></script>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-            <script src="js/google-map.js"></script>
-            <script src="js/main.js"></script>
 
-            <script>
-                $(document).ready(function () {
-
-                    var quantitiy = 0;
-                    $('.quantity-right-plus').click(function (e) {
-
-                        // Stop acting like a button
-                        e.preventDefault();
-                        // Get the field name
-                        var quantity = parseInt($('#quantity').val());
-
-                        // If is not undefined
-
-                        $('#quantity').val(quantity + 1);
+        <!-- loader -->
+        <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
-                        // Increment
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-migrate-3.0.1.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.easing.1.3.js"></script>
+        <script src="js/jquery.waypoints.min.js"></script>
+        <script src="js/jquery.stellar.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/aos.js"></script>
+        <script src="js/jquery.animateNumber.min.js"></script>
+        <script src="js/bootstrap-datepicker.js"></script>
+        <script src="js/scrollax.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+        <script src="js/google-map.js"></script>
+        <script src="js/main.js"></script>
 
-                    });
+        <script>
+            $(document).ready(function () {
 
-                    $('.quantity-left-minus').click(function (e) {
-                        // Stop acting like a button
-                        e.preventDefault();
-                        // Get the field name
-                        var quantity = parseInt($('#quantity').val());
+                var quantitiy = 0;
+                $('.quantity-right-plus').click(function (e) {
 
-                        // If is not undefined
+                    // Stop acting like a button
+                    e.preventDefault();
+                    // Get the field name
+                    var quantity = parseInt($('#quantity').val());
 
-                        // Increment
-                        if (quantity > 0) {
-                            $('#quantity').val(quantity - 1);
-                        }
-                    });
+                    // If is not undefined
+
+                    $('#quantity').val(quantity + 1);
+
+
+                    // Increment
 
                 });
-            </script>
+
+                $('.quantity-left-minus').click(function (e) {
+                    // Stop acting like a button
+                    e.preventDefault();
+                    // Get the field name
+                    var quantity = parseInt($('#quantity').val());
+
+                    // If is not undefined
+
+                    // Increment
+                    if (quantity > 0) {
+                        $('#quantity').val(quantity - 1);
+                    }
+                });
+
+            });
+            
+            
+        </script>
 
     </body>
 </html>

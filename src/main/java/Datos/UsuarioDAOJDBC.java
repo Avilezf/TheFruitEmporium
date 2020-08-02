@@ -19,7 +19,7 @@ public class UsuarioDAOJDBC {
     private static final String SQL_SELECT_BY_ID = "SELECT *" + " FROM usuarios WHERE id = ?";
     private static final String SQL_INSERT = "INSERT INTO usuario(nombre, apellido, email, rol) " + " VALUES(?,?,?,?)";
     private static final String SQL_INSERT_USR = " INSERT INTO usuarios(nombre, apellido, direccion, celular, pais, ciudad, email, ip) " + "VALUES (?,?,?,?,?,?,?,?)";
-    private static final String SQL_UPDATE = "UPDATE usuario" + " SET usuario=?, clave=?, email=?, rol=? WHERE id_usuario=?";
+    private static final String SQL_UPDATE = "UPDATE usuarios" + " SET nombre=?, apellido=?, direccion=?, celular=?, pais=?, ciudad=?, email=?, add=?, cedula=? WHERE id=?";
     private static final String SQL_DELETE = "DELETE FROM usuario WHERE id_usuario = ?";
 
 //    ORACLE    
@@ -69,7 +69,7 @@ public class UsuarioDAOJDBC {
         return usuarios;
     }
 
-    public Usuario id(Usuario usuario) throws InstantiationException, IllegalAccessException {
+    public Usuario ip(Usuario usuario) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -96,7 +96,8 @@ public class UsuarioDAOJDBC {
                 String email = rs.getString("email");
                 String ip = rs.getString("ip");
                 String add = rs.getString("add");
-                usuario = new Usuario(id, nombre, apellido, direccion, celular, pais, ciudad, email, ip, add);
+                String cedula = rs.getString("cedula");
+                usuario = new Usuario(id, nombre, apellido, direccion, celular, pais, ciudad, email, ip, add, cedula);
             }
 
         } catch (SQLException ex) {
@@ -111,7 +112,7 @@ public class UsuarioDAOJDBC {
 
         return usuario;
     }
-
+    
     public Usuario realId(Usuario usuario) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -125,7 +126,7 @@ public class UsuarioDAOJDBC {
             Class.forName("org.postgresql.Driver").newInstance();
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_SELECT_BY_ID);
-            stmt.setString(1, usuario.getIp());
+            stmt.setInt(1, usuario.getIdUsuario());
             rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -139,7 +140,8 @@ public class UsuarioDAOJDBC {
                 String email = rs.getString("email");
                 String ip = rs.getString("ip");
                 String add = rs.getString("add");
-                usuario = new Usuario(id, nombre, apellido, direccion, celular, pais, ciudad, email, ip, add);
+                String cedula = rs.getString("cedula");
+                usuario = new Usuario(id, nombre, apellido, direccion, celular, pais, ciudad, email, ip, add, cedula);
             }
 
         } catch (SQLException ex) {
@@ -243,35 +245,6 @@ public class UsuarioDAOJDBC {
         return rows;
     }
 
-    //SETENCIA UPDATE
-//    public int actualizar(Usuario usuario) throws InstantiationException, IllegalAccessException {
-//        Connection conn = null;
-//        PreparedStatement stmt = null;
-//        int rows = 0;//Registros modificados
-//
-//        try {
-//            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-//            conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-//            stmt = conn.prepareStatement(SQL_UPDATE);
-//            stmt.setString(1, cliente.getNombre());
-//            stmt.setString(2, cliente.getApellido());
-//            stmt.setString(3, cliente.getEmail());
-//            stmt.setString(4, cliente.getTelefono());
-//            stmt.setInt(5, cliente.getSaldo());
-//            stmt.setInt(6, cliente.getIdCliente());
-//
-//            rows = stmt.executeUpdate();
-//        } catch (SQLException ex) {
-//            ex.printStackTrace(System.out);
-//        } catch (ClassNotFoundException ex) {
-//            ex.printStackTrace(System.out);
-//        } finally {
-//            Conexion.close(stmt);
-//            Conexion.close(conn);
-//        }
-//
-//        return rows;
-//    }
     //SENTENCIA DELETE
 //    public int eliminar(Usuario usuario) throws InstantiationException, IllegalAccessException {
 //        Connection conn = null;
@@ -323,6 +296,43 @@ public class UsuarioDAOJDBC {
             Logger.getLogger(UsuarioDAOJDBC.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
+    }
+
+    public boolean Update(Usuario usuario) throws InstantiationException, IllegalAccessException  {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;//Registros modificados
+        boolean sw = false;
+
+        try {
+            //racle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_UPDATE);
+            stmt.setString(1, usuario.getNombre());
+            stmt.setString(2, usuario.getApellido());
+            stmt.setString(3, usuario.getDireccion());
+            stmt.setString(4, usuario.getCelular());
+            stmt.setString(5, usuario.getPais());
+            stmt.setString(6, usuario.getCiudad());
+            stmt.setString(7, usuario.getEmail());
+            stmt.setString(8, usuario.getAdd());
+            stmt.setString(9, usuario.getCedula());
+            stmt.setInt(10, usuario.getIdUsuario());
+
+            rows = stmt.executeUpdate();
+            sw = true;
+        } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
             Conexion.close(stmt);
             Conexion.close(conn);
         }

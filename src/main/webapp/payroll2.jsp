@@ -30,7 +30,7 @@
     </head>
     <body class="goto-here">
         <%@include file="/Generals/upper.jsp"%>
-        
+
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
@@ -38,8 +38,7 @@
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="${pageContext.request.contextPath}/ServletControlador?accion=home">Inicio</a></span> <span>Sobre nosotros</span></p>
-                        <h1 class="mb-0 bread">Sobre nosotros</h1>
+                        <h1 class="mb-0 bread">GRACIAS POR SU COMPRA</h1>
                     </div>
                 </div>
             </div>
@@ -49,6 +48,7 @@
             <!--Poner imagen del negocio-->
             <div class="container">
                 <div class="row">
+
                     <div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/about.jpg);">
                         <!--
                         <a href="https://vimeo.com/45830194" class="icon popup-vimeo d-flex justify-content-center align-items-center">
@@ -56,16 +56,20 @@
                         </a>
                         -->
                     </div>
+
                     <div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
                         <div class="heading-section-bold mb-4 mt-md-5">
                             <div class="ml-md-0">
-                                <h2 class="mb-4">Sean todos bienvedidos al sitio web de The Fruit Emporium</h2>
+                                <h3 class="mb-4">Es hora de pagar! PEDIDO N° ${pedido.idPedido}</h3>
+                                <h4 class="mb-4">TOTAL A PAGAR: ${pedido.total}</h4>
                             </div>
                         </div>
                         <div class="pb-md-5">
-                            <p>.aasdasdasdasda</p>
-                            <p>asdasdasdasd</p>
-                            <p><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="btn btn-primary">Compra ahora</a></p>
+                            <p>Número NEQUI: <a href="tel://+57 300 401 9873">+57 300 401 9873</a> Correo: santiagoperezalbino@gmail.com</p><br>
+                            <p>1) Ingresas el monto y envias. TOTAL A PAGAR = ${pedido.total}</p><br>
+                            <p>2) Envia un correo o un mensaje de Whatsapp con el comprobante de pago y el Número del pedido = ${pedido.idPedido}</p><br>
+                            <p>3) Espera la verificación por parte de nuestros asesores</p>
+                            <p><a href="${pageContext.request.contextPath}/ServletControlador?accion=home" class="btn btn-primary">Volver</a></p>
                         </div>
                     </div>
                 </div>
@@ -116,7 +120,7 @@
             </div>
         </section>
         -->
-        
+
         <!--TESTIMONY
         <section class="ftco-section testimony-section">
             <div class="container">
@@ -206,8 +210,8 @@
             </div>
         </section>
         -->
-        
-        
+
+
         <section class="ftco-section">
             <div class="container">
                 <div class="row no-gutters ftco-services">

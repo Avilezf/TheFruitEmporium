@@ -104,19 +104,24 @@ public class CartController extends HttpServlet {
     private void ActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant) throws ServletException, IOException, InstantiationException, IllegalAccessException {
         //Usar usuario existente
         Usuario temp = new Usuario(ip);
-        Usuario usuario = new UsuarioDAOJDBC().id(temp);
+        Usuario usuario = new UsuarioDAOJDBC().ip(temp);
 
         Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha)); //busca el id del usuario para verificar si tiene pedidos
 
-        if (pedido.getEstado() == 0) {//Si es igual a 0, el pedido o está cancelado
+        if (pedido.getEstado() != 1) {//Si es igual a 0, el pedido o está cancelado
 
-            //Insertar producto
-            boolean estado = new PedidosProductosDAO().nuevo(new PedidosProductos(pedido.getIdPedido(), ide, cant));
-            if (estado) {//Si es diferente de 0, eso significa que sí pasó
-                //Reenviar
-                Order(request, response, order, path, pedido.getCarrito());
+            //Crear nuevo pedido
+            boolean ok = new PedidoDAO().nuevo(new Pedido(usuario.getIdUsuario(), fecha));
+            if (ok) {
+                pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha));
+                boolean estado = new PedidosProductosDAO().nuevo(new PedidosProductos(pedido.getIdPedido(), ide, cant));
+                if (estado) {//Si es diferente de 0, eso significa que sí pasó
+                    //Reenviar
+                    Order(request, response, order, path, pedido.getCarrito());
+                }
             }
 
+            //Insertar producto
         } else {
             //El pedido no es nuevo
             PedidosProductos PP = new PedidosProductos(pedido.getIdPedido(), ide, cant);
@@ -153,7 +158,7 @@ public class CartController extends HttpServlet {
         int sw = new UsuarioDAOJDBC().insertar(temp);
 
         if (sw != 0) {
-            Usuario usuario = new UsuarioDAOJDBC().id(temp);
+            Usuario usuario = new UsuarioDAOJDBC().ip(temp);
             //Creamos un pedido
             Pedido p = new Pedido(usuario.getIdUsuario(), 1, 1, fecha);
             boolean n = new PedidoDAO().nuevo(p);

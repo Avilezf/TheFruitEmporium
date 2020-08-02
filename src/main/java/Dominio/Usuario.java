@@ -21,12 +21,13 @@ public class Usuario {
     private String email;
     private String ip;
     private String add;
+    private String cedula;
     //private String rol;
 
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String apellido, String direccion, String pais, String ciudad, String celular, String email, String ip, String add) {
+    public Usuario(int idUsuario, String nombre, String apellido, String direccion, String pais, String ciudad, String celular, String email, String ip, String add, String cedula) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -60,11 +61,13 @@ public class Usuario {
         this.ciudad = "";
         this.celular = "";
         this.add = "";
+        this.cedula = "";
     }
     
     
 
     public Usuario(String ip) {
+        this.cedula = "";
         this.email = "";
         this.nombre = "";
         this.apellido = "";
@@ -154,6 +157,14 @@ public class Usuario {
 
     public void setAdd(String add) {
         this.add = add;
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
     }
     
     

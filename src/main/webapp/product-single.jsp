@@ -31,27 +31,7 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body class="goto-here">
-        <div class="py-1 bg-primary">
-            <div class="container">
-                <div class="row no-gutters d-flex align-items-start align-items-center px-md-0">
-                    <div class="col-lg-12 d-block">
-                        <div class="row d-flex">
-                            <div class="col-md pr-4 d-flex topper align-items-center">
-                                <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-phone2"></span></div>
-                                <span class="text">+ 1235 2355 98</span>
-                            </div>
-                            <div class="col-md pr-4 d-flex topper align-items-center">
-                                <div class="icon mr-2 d-flex justify-content-center align-items-center"><span class="icon-paper-plane"></span></div>
-                                <span class="text">youremail@email.com</span>
-                            </div>
-                            <div class="col-md-5 pr-4 d-flex topper align-items-center text-lg-right">
-                                <span class="text">3-5 Business days delivery &amp; Free Returns</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <%@include file="/Generals/upper.jsp"%>
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
@@ -131,7 +111,7 @@
                                     <p style="color: #000;">${producto.cantidad} Disponible</p><!----------- DISPONIBLE --------------->
                                 </div>
 
-                                <p><button id="luis" type="submit" class="btn btn-dark py-3 px-5">Agregar Al Carro</button></p>
+                                <p><button  type="submit" class="btn btn-primary py-3 px-4">Agregar Al Carro</button></p>
                             </div>
                         </form>
 

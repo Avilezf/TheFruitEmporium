@@ -15,6 +15,8 @@ public class Pedido {
     int idCliente;
     int estado;
     int carrito;
+    int subtotal;
+    int total;
     String fecha;
     
     public Pedido(int idPedido) {
@@ -25,6 +27,9 @@ public class Pedido {
         this.idCliente = idCliente;
         this.fecha = fecha;
         this.estado = 0;
+        this.carrito = 0;
+        this.subtotal = 0;
+        this.total = 0;
     }
 
     public Pedido(int idCliente, int estado, int carrito, String fecha) {
@@ -34,12 +39,14 @@ public class Pedido {
         this.carrito = carrito;
     }
 
-    public Pedido(int idPedido, int idCliente, String fecha, int estado, int carrito) {
+    public Pedido(int idPedido, int idCliente, String fecha, int estado, int carrito, int subtotal, int total) {
         this.idPedido = idPedido;
         this.idCliente = idCliente;
         this.fecha = fecha;
         this.estado = estado;
         this.carrito = carrito;
+        this.subtotal = subtotal;
+        this.total = total;
     }
 
     public int getIdPedido() {
@@ -80,6 +87,22 @@ public class Pedido {
 
     public void setCarrito(int carrito) {
         this.carrito = carrito;
+    }
+
+    public int getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(int subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
     
     

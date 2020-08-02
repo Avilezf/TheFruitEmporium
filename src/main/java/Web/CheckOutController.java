@@ -57,7 +57,7 @@ public class CheckOutController extends HttpServlet {
 
                 try {
                     //Se recupera el usuario
-                    Usuario usuario = new UsuarioDAOJDBC().id(new Usuario(idusuario));
+                    Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(idusuario));
 
                     request.setAttribute("usuario", usuario);
                     request.setAttribute("idpedido", idpedido);
@@ -75,76 +75,6 @@ public class CheckOutController extends HttpServlet {
     private void accionDefault(HttpServletRequest request, HttpServletResponse response, String path, String accion) throws IOException, ServletException {
         path = "/" + accion + ".jsp";
         request.getRequestDispatcher(path).forward(request, response);
-    }
-
-    private void ActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant) throws ServletException, IOException, InstantiationException, IllegalAccessException {
-        //Usar usuario existente
-        Usuario temp = new Usuario(ip);
-        Usuario usuario = new UsuarioDAOJDBC().id(temp);
-
-        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha)); //busca el id del usuario para verificar si tiene pedidos
-
-        if (pedido.getEstado() == 0) {//Si es igual a 0, el pedido o está cancelado
-
-            //Insertar producto
-            boolean estado = new PedidosProductosDAO().nuevo(new PedidosProductos(pedido.getIdPedido(), ide, cant));
-            if (estado) {//Si es diferente de 0, eso significa que sí pasó
-                //Reenviar
-                Order(request, response, order, path, pedido.getCarrito());
-            }
-
-        } else {
-            //El pedido no es nuevo
-            PedidosProductos PP = new PedidosProductos(pedido.getIdPedido(), ide, cant);
-            boolean prod = new PedidosProductosDAO().verificar2(PP);//Se verifica si el producto está en el carro
-            if (prod) {
-                //Si el producto ya estaba en el carrito
-                PedidosProductos PedidosProductos = new PedidosProductosDAO().buscar(PP);
-                //Update
-                boolean estado = new PedidosProductosDAO().update(PedidosProductos);
-                if (estado) {
-                    Order(request, response, order, path, pedido.getCarrito());
-                }
-
-            } else {
-                //Si el producto NO está en el carrito
-
-                boolean estado = new PedidosProductosDAO().nuevo(PP);
-                if (estado) {//Si es diferente de 0, eso significa que sí pasó
-                    //Reenviar
-                    pedido.setCarrito(pedido.getCarrito() + 1);
-                    boolean ok = new PedidoDAO().actualizar(pedido);
-                    if (ok) {
-                        Order(request, response, order, path, pedido.getCarrito());
-                    }
-                }
-            }
-
-        }
-    }
-
-    private void NotActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant) throws ServletException, IOException, InstantiationException, IllegalAccessException {
-        //Crear el usuario
-        Usuario temp = new Usuario(ip);
-        int sw = new UsuarioDAOJDBC().insertar(temp);
-
-        if (sw != 0) {
-            Usuario usuario = new UsuarioDAOJDBC().id(temp);
-            //Creamos un pedido
-            Pedido p = new Pedido(usuario.getIdUsuario(), 1, 1, fecha);
-            boolean n = new PedidoDAO().nuevo(p);
-            if (n) {
-                Pedido pedido = new PedidoDAO().id(p);
-
-                //Insertar producto
-                boolean estado = new PedidosProductosDAO().nuevo(new PedidosProductos(pedido.getIdPedido(), ide, cant));
-                if (estado) {//Si es diferente de 0, eso significa que sí pasó
-                    //Reenviar
-                    Order(request, response, order, path, pedido.getCarrito());
-                }
-            }
-
-        }
     }
 
     private void Order(HttpServletRequest request, HttpServletResponse response, int order, String path, int carrito) throws ServletException, IOException {

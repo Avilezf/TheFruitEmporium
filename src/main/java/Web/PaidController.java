@@ -67,12 +67,52 @@ public class PaidController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String accion = request.getParameter("accion");
+        //Usuario
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String pais = request.getParameter("pais");
+        String direccion = request.getParameter("direccion");
+        String add = request.getParameter("add");
+        String ciudad = request.getParameter("ciudad");
+        String cedula = request.getParameter("cedula");
+        String celular = request.getParameter("celular");
+        String email = request.getParameter("email");
+        String yes = request.getParameter("yes");
+        String radio = request.getParameter("radio");
+        String subtotal = request.getParameter("subtotal");
+        String total = request.getParameter("total");
+        String idPedido = request.getParameter("idPedido");
+
         String path = ""; //Dirección para llegar al jsp
         if (accion != null) {
             switch (accion) {
-                case "insert":
+                case "buy":
+                    
+                try {
+                    Pedido pedido = new PedidoDAO().id(new Pedido(Integer.valueOf(idPedido)));
 
-                    break;
+                    //UPDATE USUARIO
+                    Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
+                    usuario.setNombre(nombre);
+                    usuario.setApellido(apellido);
+                    usuario.setPais(pais);
+                    usuario.setDireccion(direccion);
+                    usuario.setAdd(add);
+                    usuario.setCiudad(ciudad);
+                    usuario.setCelular(celular);
+                    usuario.setEmail(email);
+                    usuario.setCedula(cedula);
+                    boolean ok = new UsuarioDAOJDBC().Update(usuario);
+                    if (ok) {
+                        this.Pago(radio, pedido, subtotal, total, request, response);
+
+                    }
+
+                } catch (InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                break;
 
                 case "login":
 
@@ -91,14 +131,15 @@ public class PaidController extends HttpServlet {
     private void ActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, String accion) throws InstantiationException, IllegalAccessException, IOException, ServletException, ClassNotFoundException {
         //Usar usuario existente
         Usuario temp = new Usuario(ip);
-        Usuario usuario = new UsuarioDAOJDBC().id(temp);
+        Usuario usuario = new UsuarioDAOJDBC().ip(temp);
         Date date = new Date();
         String fecha = date.toString();
 
         Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha)); //busca el id del usuario para verificar si tiene pedidos
 
-        if (pedido.getEstado() == 0) {//Si es igual a 0, el pedido o está cancelado
-            this.accionDefault(request, response, path, accion);
+        if (pedido.getEstado() != 1) {//Si es igual a 0, el pedido o está cancelado
+            path = "/home.jsp";
+            request.getRequestDispatcher(path).forward(request, response);
         } else {
             //El pedido no es nuevo
 
@@ -166,6 +207,42 @@ public class PaidController extends HttpServlet {
             request.setAttribute("cants", cants);
             path = "/cart.jsp";
             request.getRequestDispatcher(path).forward(request, response);
+        }
+
+    }
+
+    private void Pago(String radio, Pedido pedido, String subtotal, String total, HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException {
+        Date date = new Date();
+        String fecha = date.toString();
+        pedido.setFecha(fecha);
+        pedido.setEstado(2);
+        pedido.setSubtotal(Integer.valueOf(subtotal));
+        pedido.setTotal(Integer.valueOf(total));
+        boolean ok = new PedidoDAO().actualizarEstado(pedido);
+        if (ok) {
+            String path = "";
+            request.setAttribute("pedido", pedido);
+            switch (radio) {
+                case "0"://Transferencia
+                    path = "/payroll0.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "1"://Pago por QR
+                    path = "/payroll1.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "2"://NEQUI
+                    path = "/payroll2.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                default:
+                    path = "/payroll0.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+            }
         }
 
     }
