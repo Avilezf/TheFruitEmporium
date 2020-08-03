@@ -47,6 +47,7 @@ public class ServletControlador extends HttpServlet {
         String accion = request.getParameter("accion");
         String path; //Dirección para llegar al jsp
         if (accion != null) {
+
             path = "/" + accion + ".jsp";
             request.getRequestDispatcher(path).forward(request, response);
 //            switch (accion) {
@@ -118,11 +119,27 @@ public class ServletControlador extends HttpServlet {
         if (accion != null) {
             switch (accion) {
                 case "insert":
-                   // this.insertUsuario(request, response);
+                    // this.insertUsuario(request, response);
                     break;
 
                 case "login":
-                    //this.loginUsuario(request, response);
+                    String path;
+                    String usuario = request.getParameter("username");
+                    String password = request.getParameter("pass");
+                    if (usuario.equals("admin")) {
+                        if (password.equals("llanosperez")) {
+                            //Entró
+                            path = "/admin.jsp";
+                            request.getRequestDispatcher(path).forward(request, response);
+                        } else {
+                            path = "/login.jsp";
+                            request.getRequestDispatcher(path).forward(request, response);
+                        }
+                    } else {
+                        path = "/login.jsp";
+                        request.getRequestDispatcher(path).forward(request, response);
+                    }
+
                     break;
 
 //
@@ -298,5 +315,4 @@ public class ServletControlador extends HttpServlet {
 //        }
 //
 //    }
-
 }
