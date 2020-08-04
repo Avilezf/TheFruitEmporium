@@ -129,7 +129,7 @@ public class ServletControlador extends HttpServlet {
                     if (usuario.equals("admin")) {
                         if (password.equals("llanosperez")) {
                             //Entró
-                            path = "/admin.jsp";
+                            path = "/redirect2.jsp";
                             request.getRequestDispatcher(path).forward(request, response);
                         } else {
                             path = "/login.jsp";

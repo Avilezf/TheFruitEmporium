@@ -51,11 +51,7 @@ public class PaidController extends HttpServlet {
                     this.accionDefault(request, response, path, accion);
                 }
 
-            } catch (InstantiationException ex) {
-                Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalAccessException ex) {
-                Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
                 Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -89,7 +85,7 @@ public class PaidController extends HttpServlet {
                 case "buy":
                     
                 try {
-                    Pedido pedido = new PedidoDAO().id(new Pedido(Integer.valueOf(idPedido)));
+                    Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.valueOf(idPedido)));
 
                     //UPDATE USUARIO
                     Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));

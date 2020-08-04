@@ -10,6 +10,16 @@ package Dominio;
  * @author Luis
  */
 public class Pedido {
+    
+     /*
+    //PEDIDOS:
+    //ESTADOS:
+        estado - 0: Pedido apenas creado sin productos
+        estado - 1: Pedido con productos
+        estado - 2: Pedido cancelado falta verificación
+        estado - 3: Pedido aprobado pero no enviado
+        estado - 4: Pedido enviado, pasa a ser guardado en el historial.
+   */ 
 
     int idPedido;
     int idCliente;
