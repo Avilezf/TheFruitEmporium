@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Envio - TheFuitEmporium</title>
+        <title>Registros - TheFuitEmporium</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -34,12 +34,12 @@
         <%@include file="/Generals/nav2.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/muelle1.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/registro.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="home.html">Inicio</a></span> <span>Envios</span></p>
-                        <h1 class="mb-0 bread">Mi lista de Envios</h1>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="home.html">Inicio</a></span> <span>Registros</span></p>
+                        <h1 class="mb-0 bread">Mi lista de Registros</h1>
                     </div>
                 </div>
             </div>
@@ -47,6 +47,8 @@
 
         <section class="ftco-section ftco-cart">
             <div class="container">
+                <a href="${pageContext.request.contextPath}/AdminController?accion=buscar"><span class="ion-ios-arrow-back">&nbsp; Volver</span></a>
+                <br>
                 <div class="row">
                     <div class="col-md-12 ftco-animate">
                         <div class="cart-list">
@@ -65,7 +67,7 @@
                                 <c:forEach begin="0" end="${size}" step="1" var="i">
                                     <tbody><!--Inicio de Listado de productos con precios y cantidades-->
                                         <tr class="text-center">
-                                            <td class="product-remove"><a href="${pageContext.request.contextPath}/AdminController?accion=ok2&idPedido=${pedidos.get(i).idPedido}"><span class="ion-ios-arrow-dropright-circle"></span></a></td>
+                                            <td class="product-remove"><a href="${pageContext.request.contextPath}/AdminController?accion=ok2&idPedido=${pedidos.get(i).idPedido}"><span class="ion-ios-albums"></span></a></td>
                                             <td class="">${pedidos.get(i).idPedido}</td>
 
                                             <td class="product-name">
@@ -93,7 +95,7 @@
             </div>
             <!--Fin de Listado de productos con precios y cantidades-->
         </section>
-
+s
 
         <!-- Footer -->
         <%@include file="/Generals/footer.jsp" %>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Envio - TheFuitEmporium</title>
+        <title>Registros - TheFuitEmporium</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -34,66 +34,60 @@
         <%@include file="/Generals/nav2.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/muelle1.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/registro.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="home.html">Inicio</a></span> <span>Envios</span></p>
-                        <h1 class="mb-0 bread">Mi lista de Envios</h1>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="home.html">Inicio</a></span> <span>Registros</span></p>
+                        <h1 class="mb-0 bread">Mi lista de Registros</h1>
                     </div>
                 </div>
             </div>
         </div>
 
+
+
         <section class="ftco-section ftco-cart">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 ftco-animate">
-                        <div class="cart-list">
-                            <table class="table">
-                                <thead class="thead-primary">
-                                    <tr class="text-center">
-                                        <th>&nbsp;</th>
-                                        <th>Pedido</th>
-                                        <th>Cliente</th>
-                                        <th>Número de Productos</th>
-                                        <th>Fecha</th>
-                                        <th>Total</th>
-
-                                    </tr>
-                                </thead>
-                                <c:forEach begin="0" end="${size}" step="1" var="i">
-                                    <tbody><!--Inicio de Listado de productos con precios y cantidades-->
-                                        <tr class="text-center">
-                                            <td class="product-remove"><a href="${pageContext.request.contextPath}/AdminController?accion=ok2&idPedido=${pedidos.get(i).idPedido}"><span class="ion-ios-arrow-dropright-circle"></span></a></td>
-                                            <td class="">${pedidos.get(i).idPedido}</td>
-
-                                            <td class="product-name">
-                                                <h3>${clientes.get(i).nombre}&nbsp;${clientes.get(i).apellido}</h3>
-                                                <p>${clientes.get(i).pais}</p>
-                                                <p>${clientes.get(i).direccion}&nbsp; ${clientes.get(i).add}</p>
-                                                <p>${clientes.get(i).celular}</p>
-                                            </td>
-
-                                            <td class="">${pedidos.get(i).carrito}</td>
-
-                                            <td class="">${pedidos.get(i).fecha}</td>
-
-                                            <td class="total">${pedidos.get(i).total}</td>
-
-
-                                        </tr><!-- END TR-->
-                                    </tbody>
-                                </c:forEach>
-
-                            </table>
-                        </div>
+                        <form action="${pageContext.request.contextPath}/AdminController?accion=registro" method="POST">
+                            <h1>Registro</h1>
+                            <br>
+                            <p>Buscar el mes y el año del registro</p>
+                            <br>
+                            <select name="DOBMonth">
+                                <option>- Month -</option>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembres</option>
+                            </select>
+                            <select name="DOBYear">
+                                <option>- Year -</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                            </select>
+                            <br>
+                            <br>
+                            <button type="submit" class="btn btn-primary py-3 px-4"> Aceptar </button>
+                        </form>
                     </div>
                 </div>
             </div>
             <!--Fin de Listado de productos con precios y cantidades-->
         </section>
 
+        <!-- SUSCRIPCIÓN -->
+        <%@include file="/Generals/subscribe.jsp" %>
 
         <!-- Footer -->
         <%@include file="/Generals/footer.jsp" %>

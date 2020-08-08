@@ -33,7 +33,7 @@
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/about2.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
@@ -50,7 +50,7 @@
                     <div class="w-100"></div>
                     <div class="col-md-3 d-flex">
                         <div class="info bg-white p-4">
-                            <p><span>Direción</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
+                            <p><span>Direción</span> </p>
                         </div>
                     </div>
                     <div class="col-md-3 d-flex">
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-md-3 d-flex">
                         <div class="info bg-white p-4">
-                            <p><span>Email:</span> <a href="mailto:santiagoperezalbino@gmail.com">santiagoperezalbino@gmail.com</a></p>
+                            <p><span>Email:</span> <a href="mailto:TheFruitEmporium@gmail.com">TheFruitEmporium@gmail.com</a></p>
                         </div>
                     </div>
                     <div class="col-md-3 d-flex">

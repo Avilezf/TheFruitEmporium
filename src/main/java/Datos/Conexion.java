@@ -22,7 +22,7 @@ public class Conexion {
 //    private static final String JDBC_USER = "prometeus";
 //    private static final String JDBC_PASSWORD = "adminprometeus";
     //    POSTGRESQL
-    private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/TheFruitEmporium";
+    private static final String JDBC_URL = "jdbc:postgresql://localhost:5433/TheFruitEmporium";
     private static final String JDBC_USER = "postgres";
     private static final String JDBC_PASSWORD = "c15m41td4";
 

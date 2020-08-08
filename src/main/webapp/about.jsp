@@ -34,11 +34,11 @@
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/bg_4.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="${pageContext.request.contextPath}/ServletControlador?accion=home">Inicio</a></span> <span>Sobre nosotros</span></p>
+                        <p class="breadcrumbs" ><span class="mr-2" style="color: #000;"><a href="${pageContext.request.contextPath}/ServletControlador?accion=home" style="color: #000;">Inicio</a></span> <span style="color: #000;">Sobre nosotros</span></p>
                         <h1 class="mb-0 bread">Sobre nosotros</h1>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
             <!--Poner imagen del negocio-->
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/about.jpg);">
+                    <div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/logo.jpg);">
                         <!--
                         <a href="https://vimeo.com/45830194" class="icon popup-vimeo d-flex justify-content-center align-items-center">
                             <span class="icon-play"></span>
@@ -59,12 +59,12 @@
                     <div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
                         <div class="heading-section-bold mb-4 mt-md-5">
                             <div class="ml-md-0">
-                                <h2 class="mb-4">Sean todos bienvedidos al sitio web de The Fruit Emporium</h2>
+                                <h2 class="mb-4">The Fruit Emporium</h2>
                             </div>
                         </div>
                         <div class="pb-md-5">
-                            <p>.aasdasdasdasda</p>
-                            <p>asdasdasdasd</p>
+                            <p>Somos una pequeña empresa que nos dedicamos a la venta de alimentos, frutas y verduras de calidad. Con las respectivas medidas sanitarias y un envio seguro con los mejores productos del mercado.</p>
+                            <p>Nos encontramos en esta plataforma y nos especializamos en la venta a domicilio de las frutas y verduras. </p>
                             <p><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="btn btn-primary">Compra ahora</a></p>
                         </div>
                     </div>

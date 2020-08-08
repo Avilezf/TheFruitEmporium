@@ -34,7 +34,7 @@
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/tienda.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
@@ -50,7 +50,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10 mb-5 text-center">
                         <ul class="product-category">
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="${active.get(0)}" >All</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="${active.get(0)}" >Todo</a></li>
                             <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop1" class="${active.get(1)}">Verduras</a></li>
                             <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop2" class="${active.get(2)}">Frutas</a></li>
                             <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop3" class="${active.get(3)}">Jugos</a></li>

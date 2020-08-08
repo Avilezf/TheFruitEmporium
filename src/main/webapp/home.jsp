@@ -150,7 +150,7 @@
                     <div class="col-md-4">
                         <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url(images/category-3.jpg);">
                             <div class="text px-3 py-1">
-                                <h2 class="mb-0"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop3">Jugos</a></h2>
+                                <h2 class="mb-0"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop3">Pulpa</a></h2>
                             </div>		
                         </div>
                         <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(images/category-4.jpg);">
@@ -407,8 +407,9 @@
                             </div>
                     </div>
                     </div>
-        -->
+        
     </section>
+        -->
     <!--Ofertas-->
 <!--    <section class="ftco-section img" style="background-image: url(images/bg_3.jpg);">
         <div class="container">

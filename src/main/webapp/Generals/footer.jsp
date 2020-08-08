@@ -15,7 +15,7 @@
                     <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                         <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
                         <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                        <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+                        <li class="ftco-animate"><a href="https://www.instagram.com/thefruit_emporium/?hl=es-la"><span class="icon-instagram"></span></a></li>
                     </ul>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         </ul>
                         <ul class="list-unstyled">
                             <li><a href="#" class="py-2 d-block">FAQs</a></li>
-                            <li><a href="#" class="py-2 d-block">Contacto</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=contact" class="py-2 d-block">Contacto</a></li>
                             <li><a href="${pageContext.request.contextPath}/ServletControlador?accion=login" class="py-2 d-block">Admin</a></li>
                         </ul>
                     </div>
@@ -52,9 +52,9 @@
                     <h2 class="ftco-heading-2">¿Tienes alguna pregunta?</h2>
                     <div class="block-23 mb-3">
                         <ul>
-                            <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                            <!--<li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>-->
                             <li><a href="#"><span class="icon icon-phone"></span><span class="text">+57 300 401 9873</span></a></li>
-                            <li><a href="#"><span class="icon icon-envelope"></span><span class="text">   santiagoperezalbino@gmail.com</span></a></li>
+                            <li><a href="#"><span class="icon icon-envelope"></span><span class="text">&nbsp;TheFruitEmporiumCo@gmail.com</span></a></li>
                         </ul>
                     </div>
                 </div>

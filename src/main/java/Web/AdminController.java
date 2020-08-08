@@ -8,6 +8,7 @@ package Web;
 import Datos.PedidoDAO;
 import Datos.PedidosProductosDAO;
 import Datos.ProductoDAO;
+import Datos.SendMail;
 import Datos.UsuarioDAOJDBC;
 import Dominio.Pedido;
 import Dominio.Producto;
@@ -70,9 +71,23 @@ public class AdminController extends HttpServlet {
                 case "ok2": {
                     try {
                         this.ok2(request, response);
-                    } catch (InstantiationException | IllegalAccessException ex) {
+                    } catch (Exception ex) {
                         Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                }
+                break;
+
+                case "buscar": {
+                    path = "/admin31.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+
+                }
+                break;
+
+                case "no": {
+                    path = "/validate.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+
                 }
                 break;
 
@@ -101,11 +116,37 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String accion = request.getParameter("accion");
+
         if (accion != null) {
-            try {
-                this.ok(request, response);
-            } catch (InstantiationException | IllegalAccessException ex) {
-                Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+            switch (accion) {
+                case "registro": {
+                    try {
+                        this.registro(request, response);
+                        String path = "/admin3.jsp";
+                        request.getRequestDispatcher(path).forward(request, response);
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+
+                case "ok": {
+                    try {
+                        this.ok(request, response);
+                    } catch (Exception ex) {
+                        Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+                
+                case "no": {
+                    try {
+                        this.no(request, response);
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
             }
 
         } else {
@@ -196,27 +237,69 @@ public class AdminController extends HttpServlet {
 
     }
 
-    private void ok(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException {
+    private void ok(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String idPedido = request.getParameter("pedido");
         Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.parseInt(idPedido)));
         pedido.setEstado(3);
         boolean ok = new PedidoDAO().actualizarEstado(pedido);
+        //SendEmail
+        Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
+        SendMail.sendValidator(usuario.getEmail());
+        
         if (ok) {
             this.envios(request, response);
             String path = "/admin2.jsp";
             request.getRequestDispatcher(path).forward(request, response);
         }
     }
+    
+    private void no(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException {
+        String idPedido = request.getParameter("pedido");
+        Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.parseInt(idPedido)));
+        boolean ok = new PedidoDAO().delete(pedido);
 
-    private void ok2(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException {
+        if (ok) {
+            String path = "/admin.jsp";
+            request.getRequestDispatcher(path).forward(request, response);
+        }
+    }
+
+    private void ok2(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String idPedido = request.getParameter("idPedido");
         Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.parseInt(idPedido)));
         pedido.setEstado(4);
+        //SendEmail
+        Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
+        SendMail.sendSended(usuario.getEmail());
+
         boolean ok = new PedidoDAO().actualizarEstado(pedido);
         if (ok) {
             this.envios(request, response);
             String path = "/admin.jsp";
             request.getRequestDispatcher(path).forward(request, response);
+        }
+    }
+
+    private void registro(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException {
+        String Mes = request.getParameter("DOBMonth");
+        String Año = request.getParameter("DOBYear");
+        boolean ok = new PedidoDAO().estado4(Integer.valueOf(Mes), Integer.valueOf(Año));
+        if (ok) {
+            //SI existen pedidos disponibles
+            List<Pedido> pedidos = new ArrayList<Pedido>();
+            pedidos = new PedidoDAO().estado24(4, Integer.valueOf(Mes), Integer.valueOf(Año));
+            List<Usuario> clientes = new ArrayList<Usuario>();
+            for (Pedido pedido : pedidos) {
+                Usuario cliente = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
+                clientes.add(cliente);
+            }
+            int size = clientes.size() - 1;
+            request.setAttribute("size", size);
+            request.setAttribute("clientes", clientes);
+            request.setAttribute("pedidos", pedidos);
+        } else {
+            //No existen envios disponibles
+
         }
     }
 

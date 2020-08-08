@@ -24,15 +24,17 @@ public class PedidoDAO {
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM pedidos WHERE idpedidos = ?";
     private static final String SQL_SELECT_ESTADO2 = "SELECT * FROM pedidos WHERE estado = 2";
     private static final String SQL_SELECT_ESTADOX = "SELECT * FROM pedidos WHERE estado = ?";
+    private static final String SQL_SELECT_ESTADOY = "SELECT * FROM pedidos WHERE estado = ? and yearf = ? and monthf = ?";
     private static final String SQL_SELECT_ESTADO3 = "SELECT * FROM pedidos WHERE estado = 3";
+    private static final String SQL_SELECT_ESTADO4 = "SELECT * FROM pedidos WHERE estado = 4 and yearf = ? and monthf = ?";
     private static final String SQL_SELECT_BY_IDCLIENTE = "SELECT * FROM pedidos WHERE idcliente = ? ORDER BY idpedidos DESC LIMIT 1";
     private static final String SQL_INSERT = "INSERT INTO usuario(nombre, apellido, email, rol) " + " VALUES(?,?,?,?)";
     private static final String SQL_INSERT_USR = " INSERT INTO users(namusr, lasusr, maiusr, pasusr) " + "VALUES (?,?,?,?)";
-    private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha, subtotal, total) " + "VALUES (?,?,?,?,?,?)";
+    private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha, subtotal, total, yearf, monthf) " + "VALUES (?,?,?,?,?,?,?,?)";
     private static final String SQL_UPDATE_ESTADO = "UPDATE pedido" + " SET estado=? WHERE idpedido=?";
     private static final String SQL_UPDATE_CARRITO = "UPDATE pedidos" + " SET carrito=? WHERE idpedidos=?";
     private static final String SQL_UPDATE_ESTADO2 = "UPDATE pedidos" + " SET estado=?, subtotal=?, total=?, fecha=? WHERE idpedidos=?";
-    private static final String SQL_DELETE = "DELETE FROM usuario WHERE id_usuario = ?";
+    private static final String SQL_DELETE = "DELETE FROM pedidos WHERE idpedidos = ?";
 
 //    ORACLE    
 //    private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -113,6 +115,8 @@ public class PedidoDAO {
             stmt.setString(4, pedido.getFecha());
             stmt.setInt(5, pedido.getSubtotal());
             stmt.setInt(6, pedido.getTotal());
+            stmt.setInt(7, pedido.getYear());
+            stmt.setInt(8, pedido.getMonth());
 
             rows = stmt.executeUpdate();
             sw = true;
@@ -333,7 +337,9 @@ public class PedidoDAO {
                 int carrito = rs.getInt("carrito");
                 int subtotal = rs.getInt("subtotal");
                 int total = rs.getInt("total");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total);
+                int year = rs.getInt("yearf");
+                int month = rs.getInt("monthf");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
             }
 
         } catch (SQLException ex) {
@@ -373,7 +379,9 @@ public class PedidoDAO {
                 int carrito = rs.getInt("carrito");
                 int subtotal = rs.getInt("subtotal");
                 int total = rs.getInt("total");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total);
+                int year = rs.getInt("yearf");
+                int month = rs.getInt("monthf");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
             }
 
         } catch (SQLException ex) {
@@ -482,7 +490,9 @@ public class PedidoDAO {
                 String fecha = rs.getString("fecha");
                 int subtotal = rs.getInt("subtotal");
                 int total = rs.getInt("total");
-                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total);
+                int year = rs.getInt("yearf");
+                int month = rs.getInt("monthf");
+                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
                 pedidos.add(pedido);
             }
 
@@ -497,6 +507,117 @@ public class PedidoDAO {
         }
 
         return pedidos;
+    }
+    
+    public List<Pedido> estado24(int i, int month, int year) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Pedido> pedidos = new ArrayList<Pedido>();
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_ESTADOY);
+            stmt.setInt(1, i);
+            stmt.setInt(2, year);
+            stmt.setInt(3, month);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idPedido = rs.getInt("idpedidos");
+                int idCliente = rs.getInt("idcliente");
+                int estado = rs.getInt("estado");
+                int carrito = rs.getInt("carrito");
+                String fecha = rs.getString("fecha");
+                int subtotal = rs.getInt("subtotal");
+                int total = rs.getInt("total");
+                year = rs.getInt("yearf");
+                month = rs.getInt("monthf");
+                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
+                pedidos.add(pedido);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error NULO");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return pedidos;
+    }
+
+    public boolean estado4(int month, int year) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        boolean sw = false;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_ESTADO4);
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                sw = true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error NULO");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
+    }
+
+    public boolean delete(Pedido pedido) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;//Registros afectados
+        boolean sw = false;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setInt(1, pedido.getIdPedido());
+
+            rows = stmt.executeUpdate();
+            sw = true;
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace(System.out);
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
     }
     
     

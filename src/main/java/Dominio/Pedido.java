@@ -28,28 +28,34 @@ public class Pedido {
     int subtotal;
     int total;
     String fecha;
+    int month;
+    int year;
     
     public Pedido(int idPedido) {
         this.idPedido = idPedido;
     }
 
-    public Pedido(int idCliente, String fecha) {
+    public Pedido(int idCliente, String fecha, int month, int year) {
         this.idCliente = idCliente;
         this.fecha = fecha;
         this.estado = 0;
         this.carrito = 0;
         this.subtotal = 0;
         this.total = 0;
+        this.month = month;
+        this.year = year;
     }
 
-    public Pedido(int idCliente, int estado, int carrito, String fecha) {
+    public Pedido(int idCliente, int estado, int carrito, String fecha, int month, int year) {
         this.idCliente = idCliente;
         this.fecha = fecha;
         this.estado = estado;
         this.carrito = carrito;
+        this.month = month;
+        this.year = year;
     }
 
-    public Pedido(int idPedido, int idCliente, String fecha, int estado, int carrito, int subtotal, int total) {
+    public Pedido(int idPedido, int idCliente, String fecha, int estado, int carrito, int subtotal, int total, int year, int month) {
         this.idPedido = idPedido;
         this.idCliente = idCliente;
         this.fecha = fecha;
@@ -57,6 +63,8 @@ public class Pedido {
         this.carrito = carrito;
         this.subtotal = subtotal;
         this.total = total;
+        this.month = month;
+        this.year = year;
     }
 
     public int getIdPedido() {
@@ -113,6 +121,22 @@ public class Pedido {
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
     
     

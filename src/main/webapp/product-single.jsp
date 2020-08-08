@@ -71,9 +71,11 @@
                             </p>
                         </div>
                         <p id ="precio" class="price"><span>&#36; ${producto.precio}</span></p>
+                        <!--
                         <p>
                             A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until.
                         </p>
+                        -->
                         <form action="${pageContext.request.contextPath}/CartController?accion=cart&idProducto=${producto.ide}" method="POST">
                             <div class="row mt-4">
                                 <!--
@@ -111,8 +113,9 @@
                                     <p style="color: #000;">${producto.cantidad} Disponible</p><!----------- DISPONIBLE --------------->
                                 </div>
 
-                                <p><button  type="submit" class="btn btn-primary py-3 px-4">Agregar Al Carro</button></p>
                             </div>
+                                <br>
+                                <button type="submit" class="btn add-to-cart ion-ios-add" style="background-color: #000;"> Agregar Al Carro </button>
                         </form>
 
                     </div>
@@ -126,7 +129,6 @@
                     <div class="col-md-12 heading-section text-center ftco-animate">
                         <span class="subheading">Productos</span>
                         <h2 class="mb-4">Productos Relacionados</h2>
-                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
                     </div>
                 </div>   		
             </div>

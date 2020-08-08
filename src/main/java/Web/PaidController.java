@@ -130,8 +130,10 @@ public class PaidController extends HttpServlet {
         Usuario usuario = new UsuarioDAOJDBC().ip(temp);
         Date date = new Date();
         String fecha = date.toString();
+        int month = date.getMonth();
+        int year = date.getYear();
 
-        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha)); //busca el id del usuario para verificar si tiene pedidos
+        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year)); //busca el id del usuario para verificar si tiene pedidos
 
         if (pedido.getEstado() != 1) {//Si es igual a 0, el pedido o está cancelado
             path = "/home.jsp";

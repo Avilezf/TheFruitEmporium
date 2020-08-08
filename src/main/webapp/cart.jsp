@@ -159,7 +159,7 @@
                                 <input type="hidden" name="subtotal" id="subtotal" value="${sum}">
                                 <input type="hidden" name="total" id="total" value="${envio}">
                                 <input type="hidden" name="usuario" id="usuario" value="${usuario}">
-                               <button id="luis" type="submit" class="btn btn-primary py-3 px-4">Continuar con el pago</button>
+                               <button id="luis" type="submit" class="btn btn-black py-3 px-4">Continuar con el pago</button>
                             </form>
                         
                     </div>
