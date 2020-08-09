@@ -1,7 +1,9 @@
 package Datos;
 
+import com.sun.mail.util.MailSSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,17 +33,29 @@ public class SendMail {
         // Assuming you are sending email from through gmails smtp
         String host = "smtp.gmail.com";
 
-        // Get system properties
-        Properties properties = System.getProperties();
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", host); // 
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.debug", "true"); 
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "true");
 
-        // Setup mail server
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+        } catch (GeneralSecurityException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        sf.setTrustAllHosts(true);
+        props.put("mail.smtp.ssl.socketFactory", sf);
 
         // Get the Session object.// and pass 
-        Session session = Session.getInstance(properties, new Authenticator() {
+        Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("TheFruitEmporiumCo@gmail.com", "llanosperez");
@@ -67,17 +81,29 @@ public class SendMail {
         // Assuming you are sending email from through gmails smtp
         String host = "smtp.gmail.com";
 
-        // Get system properties
-        Properties properties = System.getProperties();
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", host); // 
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.debug", "true"); 
+        props.put("mail.smtp.ssl.enable", "true");
+        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "true");
 
-        // Setup mail server
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "true");
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+        } catch (GeneralSecurityException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        sf.setTrustAllHosts(true);
+        props.put("mail.smtp.ssl.socketFactory", sf);
 
         // Get the Session object.// and pass 
-        Session session = Session.getInstance(properties, new Authenticator() {
+        Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("TheFruitEmporiumCo@gmail.com", "llanosperez");
