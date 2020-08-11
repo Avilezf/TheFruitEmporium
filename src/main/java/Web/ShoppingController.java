@@ -39,7 +39,9 @@ public class ShoppingController extends HttpServlet {
                     }
 
                 } else {
-                    this.accionDefault(request, response, path, accion);
+                    if (accion.substring(0, 4).equals("list")) {
+                        this.List(request, response, path, accion);
+                    }
                 }
             } else {
                 if (accion.length() == 5) {
@@ -142,6 +144,49 @@ public class ShoppingController extends HttpServlet {
         numero.set(num, "active");
         numero.set(5, String.valueOf(num));
         return numero;
+    }
+
+    private void List(HttpServletRequest request, HttpServletResponse response, String path, String accion) throws ServletException, IOException {
+        try {
+            String num = accion.substring(4, 5);
+            List<Producto> productos = new ProductoDAO().listar(num);
+            request.setAttribute("productos", productos);
+            List<String> numact = add(Integer.parseInt(num));
+            request.setAttribute("active", numact);
+            String carrito = request.getParameter("carrito");
+            request.setAttribute("carrito", carrito);
+            switch (num) {
+                case "0"://Shopping Default
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "1"://Shopping Fruits
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "2"://Shopping Vegetables
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "3"://Shopping Juices
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "4"://Shopping Dried
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+            }
+        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException ex) {
+            System.out.println("--------------------------------Error-------------------------------");
+            Logger.getLogger(ShoppingController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("--------------------------------Error-------------------------------");
+        }
     }
 
 }

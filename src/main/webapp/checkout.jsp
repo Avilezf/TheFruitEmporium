@@ -55,46 +55,46 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="firstname">Nombres</label>
-                                        <input name="nombre" id="nombre" type="text" class="form-control" value= "${usuario.getNombre()}" placeholder="" required>
+                                        <input name="nombre" id="nombre" type="text" class="form-control" value= "${usuario.nombre}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="lastname">Apellidos</label>
-                                        <input name="apellido" id="apellido" type="text" class="form-control" value= "${usuario.getApellido()}" placeholder="" required>
+                                        <input name="apellido" id="apellido" type="text" class="form-control" value= "${usuario.apellido}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="country">País</label>
-                                        <input name="pais" id="pais"  type="text" class="form-control" value= "${usuario.getPais()}" placeholder="" required>
+                                        <input name="pais" id="pais"  type="text" class="form-control" value= "${usuario.pais}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="streetaddress">Dirección</label>
-                                        <input name="direccion" id="direccion" type="text" class="form-control" value= "${usuario.getDireccion()}" placeholder="Ej: Cra 50 # 80 - 123" required>
+                                        <input name="direccion" id="direccion" type="text" class="form-control" value= "${usuario.direccion}" placeholder="Ej: Cra 50 # 80 - 123" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input name="add" id="add" type="text" class="form-control" value= "${usuario.getAdd()}" placeholder="Ej: Apto 101, Casa 128, Conjunto Residencial" required>
+                                        <input name="add" id="add" type="text" class="form-control" value= "${usuario.add}" placeholder="Ej: Apto 101, Casa 128, Conjunto Residencial" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="towncity">Ciudad</label>
-                                        <input name="ciudad" id="ciudad"  type="text" class="form-control" value= "${usuario.getCiudad()}" placeholder="" required>
+                                        <input name="ciudad" id="ciudad"  type="text" class="form-control" value= "${usuario.ciudad}" placeholder="" required>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="id">Cédula</label>
-                                        <input name="cedula" id="cedula" type="text" class="form-control" placeholder="" required>
+                                        <input name="cedula" id="cedula" type="text" class="form-control" value= "${usuario.cedula}" placeholder="" required>
                                     </div>
                                 </div>
 
@@ -102,13 +102,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone">Celular</label>
-                                        <input name="celular" id="celular" type="text" class="form-control" value= "${usuario.getCelular()}" placeholder="" required>
+                                        <input name="celular" id="celular" type="text" class="form-control" value= "${usuario.celular}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="emailaddress">Correo Electrónico</label>
-                                        <input name="email" id="email" type="text" class="form-control" value= "${usuario.getEmail()}" placeholder="" required>
+                                        <input name="email" id="email" type="text" class="form-control" value= "${usuario.email}" placeholder="" required>
                                     </div>
                                 </div>
                                 <div class="w-100"></div>

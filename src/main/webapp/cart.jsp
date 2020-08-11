@@ -35,12 +35,12 @@
         <%@include file="/Generals/nav.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/bg_1.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/carrito.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="home.html">Inicio</a></span> <span>Carrito</span></p>
-                        <h1 class="mb-0 bread">Mi Carrito</h1>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="home.html" style="color: #000">Inicio</a></span> <span style="color: #000">Carrito</span></p>
+                        <h1 class="mb-0 bread" style="color: #000">Mi Carrito</h1>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,6 @@
 
                                             <td class="product-name">
                                                 <h3>${productos.get(i).nombre}</h3><!-------------------------->                                            
-                                                <p>Far far away, behind the word mountains, far from the countries</p>
                                             </td>
 
                                             <td class="price">&#36; ${productos.get(i).precio}</td>

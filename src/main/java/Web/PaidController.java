@@ -13,7 +13,8 @@ import Dominio.Pedido;
 import Dominio.PedidosProductos;
 import Dominio.Producto;
 import Dominio.Usuario;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
  *
@@ -37,6 +42,27 @@ public class PaidController extends HttpServlet {
         String accion = request.getParameter("accion");
         String path = ""; //Dirección para llegar al jsp
         if (accion != null) {
+            if (accion.equals("trash")) {
+
+                try {
+                    String ide = request.getParameter("idProducto");
+                    Producto producto = new ProductoDAO().buscarId(Integer.getInteger(ide));
+                    File f = new File("D:\\Documentos\\Proyectos\\TheFruitEmporium\\TheFruitEmporium\\src\\main\\webapp\\" + producto.getImg());
+                    if (f.delete()) {
+                        System.out.println("Image Deleted...");
+                        boolean ok = new ProductoDAO().eliminar(ide);
+                        if (ok) {
+                            System.out.println("Prodcuto Deleted");
+                            path = "/redirect3.jsp";
+                            request.getRequestDispatcher(path).forward(request, response);
+                        }
+                    }
+
+                } catch (InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
             try {
                 String ip = request.getRemoteHost();
 
@@ -63,56 +89,142 @@ public class PaidController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String accion = request.getParameter("accion");
-        //Usuario
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String pais = request.getParameter("pais");
-        String direccion = request.getParameter("direccion");
-        String add = request.getParameter("add");
-        String ciudad = request.getParameter("ciudad");
-        String cedula = request.getParameter("cedula");
-        String celular = request.getParameter("celular");
-        String email = request.getParameter("email");
-        String yes = request.getParameter("yes");
-        String radio = request.getParameter("radio");
-        String subtotal = request.getParameter("subtotal");
-        String total = request.getParameter("total");
-        String idPedido = request.getParameter("idPedido");
 
         String path = ""; //Dirección para llegar al jsp
         if (accion != null) {
             switch (accion) {
                 case "buy":
-                    
-                try {
-                    Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.valueOf(idPedido)));
+                    //Usuario
+                    String nombre = request.getParameter("nombre");
+                    String apellido = request.getParameter("apellido");
+                    String pais = request.getParameter("pais");
+                    String direccion = request.getParameter("direccion");
+                    String add = request.getParameter("add");
+                    String ciudad = request.getParameter("ciudad");
+                    String cedula = request.getParameter("cedula");
+                    String celular = request.getParameter("celular");
+                    String email = request.getParameter("email");
+                    String yes = request.getParameter("yes");
+                    String radio = request.getParameter("radio");
+                    String subtotal = request.getParameter("subtotal");
+                    String total = request.getParameter("total");
+                    String idPedido = request.getParameter("idPedido");
 
-                    //UPDATE USUARIO
-                    Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
-                    usuario.setNombre(nombre);
-                    usuario.setApellido(apellido);
-                    usuario.setPais(pais);
-                    usuario.setDireccion(direccion);
-                    usuario.setAdd(add);
-                    usuario.setCiudad(ciudad);
-                    usuario.setCelular(celular);
-                    usuario.setEmail(email);
-                    usuario.setCedula(cedula);
-                    boolean ok = new UsuarioDAOJDBC().Update(usuario);
-                    if (ok) {
-                        this.Pago(radio, pedido, subtotal, total, request, response);
+                    try {
+                        Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.valueOf(idPedido)));
 
+                        //UPDATE USUARIO
+                        Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
+                        usuario.setNombre(nombre);
+                        usuario.setApellido(apellido);
+                        usuario.setPais(pais);
+                        usuario.setDireccion(direccion);
+                        usuario.setAdd(add);
+                        usuario.setCiudad(ciudad);
+                        usuario.setCelular(celular);
+                        usuario.setEmail(email);
+                        usuario.setCedula(cedula);
+                        boolean ok = new UsuarioDAOJDBC().Update(usuario);
+                        if (ok) {
+                            this.Pago(radio, pedido, subtotal, total, request, response);
+
+                        }
+
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                } catch (InstantiationException | IllegalAccessException ex) {
-                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    break;
 
-                break;
+                case "agregar":
+                    //Producto
+                    nombre = "";
+                    String precio = "";
+                    String cantidad = "";
+                    String categoria = "";
+                    String img = "";
+                    String id = "";
+                    ServletFileUpload sf = new ServletFileUpload(new DiskFileItemFactory());
 
-                case "login":
+                    try {
+                        int num = 0;
+                        List<FileItem> files = sf.parseRequest(request);
+                        for (FileItem file : files) {
+                            if (file.isFormField()) {
+                                switch (num) {
+                                    case 0:
+                                        nombre = file.getString();
+                                        break;
+
+                                    case 1:
+                                        precio = file.getString();
+                                        break;
+
+                                    case 2:
+                                        cantidad = file.getString();
+                                        break;
+
+                                    case 3:
+                                        categoria = file.getString();
+                                        break;
+
+                                    case 4:
+                                        img = file.getString();
+                                        break;
+
+                                    case 5:
+                                        id = file.getString();
+                                        break;
+                                }
+                            } else {
+                                file.write(new File("D:\\Documentos\\Proyectos\\TheFruitEmporium\\TheFruitEmporium\\src\\main\\webapp\\" + img));
+                            }
+                            num++;
+                        }
+                    } catch (FileUploadException ex) {
+                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println("Uploaded...");
+
+                    if (id == null || id.equals("")) {
+                        try {
+                            //Crear producto
+                            Producto producto = new Producto(nombre, Integer.parseInt(precio), Integer.parseInt(cantidad), img, Integer.parseInt(categoria));
+                            boolean ok = new ProductoDAO().insertar(producto);
+                            if (ok) {
+                                path = "/redirect3.jsp";
+                                request.getRequestDispatcher(path).forward(request, response);
+
+                            }
+                        } catch (InstantiationException | IllegalAccessException ex) {
+                            Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        //Modificar producto
+                        try {
+                            //UPDATE producto
+                            Producto producto = new ProductoDAO().buscarId(Integer.parseInt(id));
+                            producto.setNombre(nombre);
+                            producto.setPrecio(Integer.parseInt(precio));
+                            producto.setCantidad(Integer.parseInt(cantidad));
+                            producto.setCategoria(Integer.parseInt(categoria));
+                            producto.setImg(img);
+                            boolean ok = new ProductoDAO().actualizar(producto);
+                            if (ok) {
+                                path = "/redirect3.jsp";
+                                request.getRequestDispatcher(path).forward(request, response);
+
+                            }
+
+                        } catch (InstantiationException | IllegalAccessException ex) {
+                            Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
 
                     break;
+
             }
         } else {
             this.accionDefault(request, response, path, accion);
@@ -243,6 +355,10 @@ public class PaidController extends HttpServlet {
             }
         }
 
+    }
+
+    private Object ProductoDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

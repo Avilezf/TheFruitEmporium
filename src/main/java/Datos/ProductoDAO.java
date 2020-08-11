@@ -22,9 +22,9 @@ public class ProductoDAO {
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM productos WHERE ide = ?";
     private static final String SQL_INSERT = "INSERT INTO usuario(nombre, apellido, email, rol) " + " VALUES(?,?,?,?)";
     private static final String SQL_INSERT_USR = " INSERT INTO users(namusr, lasusr, maiusr, pasusr) " + "VALUES (?,?,?,?)";
-    private static final String SQL_INSERT_PEDIDO = " INSERT INTO users(namusr, lasusr, maiusr, pasusr) " + "VALUES (?,?,?,?)";
-    private static final String SQL_UPDATE = "UPDATE usuario" + " SET usuario=?, clave=?, email=?, rol=? WHERE id_usuario=?";
-    private static final String SQL_DELETE = "DELETE FROM usuario WHERE id_usuario = ?";
+    private static final String SQL_INSERT_PRODUCTO = " INSERT INTO productos(nombre, precio, cantidad, img, categoria) " + "VALUES (?,?,?,?,?)";
+    private static final String SQL_UPDATE = "UPDATE productos" + " SET nombre=?, precio=?, cantidad=?, img=?, categoria=? WHERE ide=?";
+    private static final String SQL_DELETE = "DELETE FROM productos WHERE ide = ?";
 
 //    ORACLE    
 //    private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:XE";
@@ -85,13 +85,12 @@ public class ProductoDAO {
     }
 
     //SETENCIA SELECT BY ID
-    
-
     //SETENCIA INSERT INTO
     public boolean insertar(Producto producto) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
         int rows;
+        boolean sw = false;
 
         try {
             //Oracle
@@ -100,14 +99,16 @@ public class ProductoDAO {
             //Postgres
             Class.forName("org.postgresql.Driver").newInstance();
             conn = Conexion.getConnection();
-            stmt = conn.prepareStatement(SQL_INSERT_PEDIDO);
-            //stmt.setString(1, producto.getNombre());
-            //stmt.setString(2, producto.getApellido());
-            //stmt.setString(3, producto.getEmail());
-            //stmt.setString(4, producto.getClave());
+            stmt = conn.prepareStatement(SQL_INSERT_PRODUCTO);
+            stmt.setString(1, producto.getNombre());
+            stmt.setInt(2, producto.getPrecio());
+            stmt.setInt(3, producto.getCantidad());
+            stmt.setString(4, producto.getImg());
+            stmt.setInt(5, producto.getPrecio());
 
             rows = stmt.executeUpdate();
             System.out.println(" --------------------------------------------------------------------------- Rows " + rows);
+            sw = true;
 
         } catch (SQLException | ClassNotFoundException ex) {
             ex.printStackTrace(System.out);
@@ -116,7 +117,7 @@ public class ProductoDAO {
             Conexion.close(conn);
         }
 
-        return true;
+        return sw;
     }
 
     //SETENCIA UPDATE
@@ -258,12 +259,12 @@ public class ProductoDAO {
 
         return productos;
     }
-    
+
     public Producto buscarId(int num) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        
+
         Producto producto = null;
 
         try {
@@ -298,5 +299,66 @@ public class ProductoDAO {
         }
 
         return producto;
+    }
+
+    public boolean actualizar(Producto producto) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;//Registros modificados
+        boolean sw = false;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_UPDATE);
+            stmt.setString(1, producto.getNombre());
+            stmt.setInt(2, producto.getPrecio());
+            stmt.setInt(3, producto.getCantidad());
+            stmt.setString(4, producto.getImg());
+            stmt.setInt(5, producto.getCategoria());
+            stmt.setInt(6, producto.getIde());
+
+            rows = stmt.executeUpdate();
+            sw = true;
+        } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
+    }
+
+    public boolean eliminar(String ide) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;//Registros afectados
+        boolean sw = false;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+             conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_DELETE);
+            stmt.setInt(1, Integer.parseInt(ide));
+
+            rows = stmt.executeUpdate();
+            sw = true;
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
     }
 }

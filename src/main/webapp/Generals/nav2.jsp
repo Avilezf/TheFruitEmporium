@@ -11,11 +11,10 @@
                 <li class="nav-item"><a href="${pageContext.request.contextPath}/AdminController?accion=envio" class="nav-link">Envio</a></li>
                 <li class="nav-item"><a href="${pageContext.request.contextPath}/AdminController?accion=buscar" class="nav-link">Registro</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Productos</a>
+                    <a class="nav-link dropdown-toggle" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Productos</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/AdminController?accion=addproduct">Agregar Productos</a>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/AdminController?accion=modproduct">Modificar Productos</a>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/AdminController?accion=drpproduct">Eliminar Productos</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/CheckOutController?accion=add">Agregar Productos</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/ShoppingController?accion=list0">Modificar Productos</a>
                     </div>
                 </li>
 

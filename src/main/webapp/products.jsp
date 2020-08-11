@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Tienda - TheFruitEmporium</title>
+        <title>Lista - TheFruitEmporium</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -31,10 +31,10 @@
     </head>
     <body class="goto-here">
         <%@include file="/Generals/upper.jsp"%>
-        <%@include file="/Generals/nav.jsp" %>
+        <%@include file="/Generals/nav2.jsp" %>
         <!-- END nav -->
 
-        <div class="hero-wrap hero-bread" style="background-image: url('images/tienda.jpg');">
+        <div class="hero-wrap hero-bread" style="background-image: url('images/car.jpg');">
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
@@ -50,11 +50,11 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10 mb-5 text-center">
                         <ul class="product-category">
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="${active.get(0)}" >Todo</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop1" class="${active.get(1)}">Verduras</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop2" class="${active.get(2)}">Frutas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop3" class="${active.get(3)}">Pulpa</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop4" class="${active.get(4)}">Secos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=list0" class="${active.get(0)}" >Todo</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=list1" class="${active.get(1)}">Verduras</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=list2" class="${active.get(2)}">Frutas</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=list3" class="${active.get(3)}">Pulpa</a></li>
+                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=list4" class="${active.get(4)}">Secos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
 
                             <div class="product">
                                 
-                                <a href="${pageContext.request.contextPath}/ShoppingController?accion=buscar&idProducto=${producto.ide}" class="img-prod"><img id = "img2" class="img-fluid" src="${producto.img}" alt="Colorlib Template">
+                                <a href="${pageContext.request.contextPath}/CheckOutController?accion=mod&idProducto=${producto.ide}" class="img-prod"><img id = "img2" class="img-fluid" src="${producto.img}" alt="Colorlib Template">
                                     <!--<span class="status">30%</span>
                                     <div class="overlay"></div>-->
                                 </a>
@@ -149,15 +149,16 @@
                                         <div class="pricing">
                                             <!--<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>-->
                                             <p class="price" id ="ss2"><span>&#36; ${producto.precio}</span></p>
+                                            <p class="quantity" id ="ss2"><span>${producto.cantidad}</span></p>
                                         </div>
                                     </div>
                                     <div class="bottom-area d-flex px-3">
                                         <div class="m-auto d-flex">
-                                            <a href="${pageContext.request.contextPath}/ShoppingController?accion=buscar&idProducto=${producto.ide}" class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                                <span><i class="ion-ios-menu"></i></span>
+                                            <a href="${pageContext.request.contextPath}/CheckOutController?accion=mod&idProducto=${producto.ide}" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                                <span><i class="ion-ios-apps"></i></span>
                                             </a>
-                                            <a href="${pageContext.request.contextPath}/CartController?accion=cart&idProducto=${producto.ide}&Cantidad=1&Order=${active.get(5)}" class="buy-now d-flex justify-content-center align-items-center mx-1">
-                                                <span><i class="ion-ios-cart"></i></span>
+                                            <a href="${pageContext.request.contextPath}/PaidController?accion=trash&idProducto=${producto.ide}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                                <span><i class="ion-ios-trash"></i></span>
                                             </a>
                                                 <!--
                                             <a href="${pageContext.request.contextPath}/ShoppingController?accion=wishlist" class="heart d-flex justify-content-center align-items-center ">
@@ -505,8 +506,7 @@
             </div>
         </section>
 -->
-        <!-- SUSCRIPCIÓN -->
-        <%@include file="/Generals/subscribe.jsp" %>
+
 
         <!-- Footer -->
         <%@include file="/Generals/footer.jsp" %>

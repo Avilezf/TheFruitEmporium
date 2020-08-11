@@ -36,8 +36,28 @@ public class CheckOutController extends HttpServlet {
         String accion = request.getParameter("accion");
         String path = ""; //Dirección para llegar al jsp
         if (accion != null) {
+            switch (accion) {
+                case "add":
+                    path = "/object.jsp"; //Dirección para llegar al jsp
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
 
-            this.accionDefault(request, response, path, accion);
+                case "mod":
+                    String idProducto = request.getParameter("idProducto");
+                    path = ""; //Dirección para llegar al jsp
+
+                    try {
+                        //Se recupera el usuario
+                        Producto producto = new ProductoDAO().buscarId(Integer.parseInt(idProducto));
+                        request.setAttribute("producto", producto);
+                        path = "/object.jsp"; //Dirección para llegar al jsp
+                        request.getRequestDispatcher(path).forward(request, response);
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(CheckOutController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+            }
+
         } else {
             this.accionDefault(request, response, path, accion);
         }
@@ -47,7 +67,7 @@ public class CheckOutController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String accion = request.getParameter("accion");
         switch (accion) {
-            
+
             case "checkout":
                 String idusuario = request.getParameter("usuario");
                 String idpedido = request.getParameter("pedido");
