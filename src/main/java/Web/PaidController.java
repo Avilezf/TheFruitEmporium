@@ -8,6 +8,7 @@ package Web;
 import Datos.PedidoDAO;
 import Datos.PedidosProductosDAO;
 import Datos.ProductoDAO;
+import Datos.SendMail;
 import Datos.UsuarioDAOJDBC;
 import Dominio.Pedido;
 import Dominio.PedidosProductos;
@@ -132,9 +133,12 @@ public class PaidController extends HttpServlet {
 
                     } catch (InstantiationException | IllegalAccessException ex) {
                         Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } catch (Exception ex) {
+                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
                     break;
+
 
                 case "agregar":
                     //Producto
@@ -321,7 +325,7 @@ public class PaidController extends HttpServlet {
 
     }
 
-    private void Pago(String radio, Pedido pedido, String subtotal, String total, HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException {
+    private void Pago(String radio, Pedido pedido, String subtotal, String total, HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException, Exception {
         Date date = new Date();
         String fecha = date.toString();
         pedido.setFecha(fecha);
@@ -330,6 +334,8 @@ public class PaidController extends HttpServlet {
         pedido.setTotal(Integer.valueOf(total));
         boolean ok = new PedidoDAO().actualizarEstado(pedido);
         if (ok) {
+            String to = "TheFruitEmporiumCo@gmail.com";
+            SendMail.sendPedido(to, pedido);
             String path = "";
             request.setAttribute("pedido", pedido);
             switch (radio) {

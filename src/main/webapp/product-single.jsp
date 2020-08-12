@@ -110,7 +110,7 @@
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-12">
-                                    <p style="color: #000;">${producto.cantidad} Disponible</p><!----------- DISPONIBLE --------------->
+                                   <!-- <p style="color: #000;">${producto.cantidad} Disponible</p><!----------- DISPONIBLE --------------->
                                 </div>
 
                             </div>
