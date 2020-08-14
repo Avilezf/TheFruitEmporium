@@ -244,7 +244,7 @@ public class AdminController extends HttpServlet {
         boolean ok = new PedidoDAO().actualizarEstado(pedido);
         //SendEmail
         Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
-        SendMail.sendValidator(usuario.getEmail());
+        SendMail.sendValidator(usuario.getEmail(), pedido);
         
         if (ok) {
             this.envios(request, response);

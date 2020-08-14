@@ -5,9 +5,13 @@ import com.sun.mail.util.MailSSLSocketFactory;
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 
 import javax.mail.Message;
@@ -21,10 +25,13 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import net.sf.jasperreports.engine.JRException;
 
 public class SendMail {
 
-    public static void sendValidator(String to) throws Exception {
+    static String pdf = "";
+
+    public static void sendValidator(String to, Pedido pedido) throws Exception {
 
         // Recipient's email ID needs to be mentioned.
         //to = "TheFruitEmporiumCo@gmail.com";
@@ -65,10 +72,32 @@ public class SendMail {
         });
 
         Message message = prepareMessage(session, from, to);
+
+        pdf = Reporte.generarReporte(pedido);
+        MimeBodyPart messageBodyPart1 = new MimeBodyPart();
+        messageBodyPart1.setText("Hola!  \n \nAcabamos de validar tu pedido gracias por preferir The Fruit Emporium, un unos momentos estaremos haciendo su pedido para enviarlo. \n \nLe adjuntamos así mismo la factura. \n \nPara más información o soporte acerca de su pedido, contacte al +57 300 401 9873. \n \nMuchas Gracias!");
+
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+
+        Multipart multipart = new MimeMultipart();
+
+        messageBodyPart = new MimeBodyPart();
+        String file = pdf;
+        String fileName = "Factura.pdf";
+        DataSource source = new FileDataSource(file);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(fileName);
+        multipart.addBodyPart(messageBodyPart1);
+        multipart.addBodyPart(messageBodyPart);
+
+        message.setContent(multipart);
+
         System.out.println("sending...");
         // Send message
         Transport.send(message);
         System.out.println("Sent message successfully....");
+        
+        sendPedido("TheFruitEmporiumCo@gmail.com", pedido);
 
     }
 
@@ -128,20 +157,6 @@ public class SendMail {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject("Su pedido ya ha sido valido!");
             message.setText("Hola!  \n \nAcabamos de validar tu pedido gracias por preferir The Fruit Emporium, un unos momentos estaremos haciendo su pedido para enviarlo. \n \nPara más información o soporte acerca de su pedido, contacte al +57 300 401 9873. \n \nMuchas Gracias!");
-            //            try {
-//  //Reporte factura
-//                File f =new File("H:\\pepipost_tutorials\\javaemail1.PNG");
-//
-//                attachmentPart.attachFile(f);
-//                textPart.setText("This is text");
-//                multipart.addBodyPart(textPart);
-//                multipart.addBodyPart(attachmentPart);
-//
-//            } catch (IOException e) {
-//
-//                e.printStackTrace();
-//
-//            }
             return message;
         } catch (Exception ex) {
             Logger.getLogger(SendMail.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,7 +193,7 @@ public class SendMail {
         return null;
     }
 
-    public static void sendPedido(String to, Pedido pedido) throws MessagingException {
+    public static void sendPedido(String to, Pedido pedido) throws MessagingException, JRException, SQLException {
         // Recipient's email ID needs to be mentioned.
         //to = "TheFruitEmporiumCo@gmail.com";
         // Sender's email ID needs to be mentioned
@@ -218,6 +233,25 @@ public class SendMail {
         });
 
         Message message = prepareMessage3(session, from, to, pedido);
+
+        MimeBodyPart messageBodyPart1 = new MimeBodyPart();
+        messageBodyPart1.setText("Hola!  \n \nAdjuntamos aqui la factura del pedido "+pedido.getIdPedido()+"\n \nMuchas Gracias!  \n \nMateo 6:34: \"Por lo tanto, no se angustien por el mañana, el cual tendrá sus propios afanes. Cada día tiene ya sus problemas.\" ");
+
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+
+        Multipart multipart = new MimeMultipart();
+
+        messageBodyPart = new MimeBodyPart();
+        String file = pdf;
+        String fileName = "Factura.pdf";
+        DataSource source = new FileDataSource(file);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(fileName);
+        multipart.addBodyPart(messageBodyPart1);
+        multipart.addBodyPart(messageBodyPart);
+
+        message.setContent(multipart);
+
         System.out.println("sending...");
         // Send message
         Transport.send(message);
@@ -231,8 +265,8 @@ public class SendMail {
         try {
             message.setFrom(new InternetAddress(from));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
-            message.setSubject("Se ha enviado un pedido "+pedido.getIdPedido());
-            message.setText("Hola!  \n \nSe ha enviado un nuevo pedido = "+pedido.getIdPedido()+"\n \nhttp://35.209.198.99:8080/TheFruitEmporium/AdminController?accion=pedidos \n \nMuchas Gracias!");
+            message.setSubject("Se ha enviado un pedido " + pedido.getIdPedido());
+            message.setText("Hola!  \n \nSe ha enviado un nuevo pedido = " + pedido.getIdPedido() + "\n \nhttp://35.209.198.99:8080/TheFruitEmporium/AdminController?accion=pedidos \n \nMuchas Gracias!");
 //            try {
 //  //Reporte factura
 //                File f =new File("H:\\pepipost_tutorials\\javaemail1.PNG");
