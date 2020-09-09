@@ -231,6 +231,7 @@ public class AdminController extends HttpServlet {
             request.setAttribute("pedido", pedido);
             request.setAttribute("cliente", usuario);
             request.setAttribute("cantidad", cantProductos);
+            request.setAttribute("descripcion", pedido.getDescripcion());
         } catch (IllegalAccessException ex) {
             Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
         }

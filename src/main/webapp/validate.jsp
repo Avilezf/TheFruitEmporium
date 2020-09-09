@@ -89,6 +89,12 @@
                     </div>
                 </div>
                 <div class="col-lg-4 mt-4 cart-wrap ftco-animate">
+                    <h6>Observaciones</h6>
+                    <div class="cart-total mb-3">
+                        <div class="form-group">
+                            <label type="text" name = "descripcion" id = "descripcion">${descripcion}</label>
+                        </div>
+                    </div>
                     <div class="cart-total mb-3">
                         <h3>Total del Carrito</h3>
                         <p class="d-flex">
@@ -116,7 +122,7 @@
                         <input type="hidden" name="pedido" id="pedido" value="${idPedido}">
                         <button id="luis" type="submit" class="btn btn-primary py-3 px-4">VALIDAR</button>
                     </form>
-                        <br>
+                    <br>
                     <form action="${pageContext.request.contextPath}/AdminController?accion=no" method="POST">
                         <input type="hidden" name="pedido" id="pedido" value="${idPedido}">
                         <button type="submit" class="btn btn-danger py-3 px-4">NO VALIDAR</button>

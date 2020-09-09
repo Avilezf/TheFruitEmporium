@@ -72,6 +72,7 @@ public class CheckOutController extends HttpServlet {
                 String idusuario = request.getParameter("usuario");
                 String idpedido = request.getParameter("pedido");
                 String subtotal = request.getParameter("subtotal");
+                String descripcion = request.getParameter("descripcion");
                 String total = request.getParameter("total");
                 String path = ""; //Dirección para llegar al jsp
 
@@ -83,8 +84,19 @@ public class CheckOutController extends HttpServlet {
                     request.setAttribute("idpedido", idpedido);
                     request.setAttribute("subtotal", subtotal);
                     request.setAttribute("total", total);
+                    
+                    if (!descripcion.isEmpty()) {
+                        //Enviar la descripción
+                        Pedido pedido = new Pedido(Integer.parseInt(idpedido), descripcion);
+                        boolean sw = new PedidoDAO().updatedescripcion(pedido);
+                        if (sw) {
+                            this.accionDefault(request, response, path, accion);
+                        }
+                    }else{
+                        this.accionDefault(request, response, path, accion);
+                    }
 
-                    this.accionDefault(request, response, path, accion);
+                    
                 } catch (InstantiationException | IllegalAccessException ex) {
                     Logger.getLogger(CheckOutController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -127,6 +139,10 @@ public class CheckOutController extends HttpServlet {
                 break;
 
         }
+    }
+
+    private Object PedidoDAO() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

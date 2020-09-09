@@ -30,9 +30,15 @@ public class Pedido {
     String fecha;
     int month;
     int year;
+    String descripcion;
     
     public Pedido(int idPedido) {
         this.idPedido = idPedido;
+    }
+    
+    public Pedido(int idPedido, String descripcion) {
+        this.idPedido = idPedido;
+        this.descripcion = descripcion;
     }
 
     public Pedido(int idCliente, String fecha, int month, int year) {
@@ -55,7 +61,7 @@ public class Pedido {
         this.year = year;
     }
 
-    public Pedido(int idPedido, int idCliente, String fecha, int estado, int carrito, int subtotal, int total, int year, int month) {
+    public Pedido(int idPedido, int idCliente, String fecha, int estado, int carrito, int subtotal, int total, int year, int month, String descripcion) {
         this.idPedido = idPedido;
         this.idCliente = idCliente;
         this.fecha = fecha;
@@ -65,6 +71,7 @@ public class Pedido {
         this.total = total;
         this.month = month;
         this.year = year;
+        this.descripcion = descripcion;
     }
 
     public int getIdPedido() {
@@ -137,6 +144,14 @@ public class Pedido {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
     

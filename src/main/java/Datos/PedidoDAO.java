@@ -33,6 +33,7 @@ public class PedidoDAO {
     private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha, subtotal, total, yearf, monthf) " + "VALUES (?,?,?,?,?,?,?,?)";
     private static final String SQL_UPDATE_ESTADO = "UPDATE pedido" + " SET estado=? WHERE idpedido=?";
     private static final String SQL_UPDATE_CARRITO = "UPDATE pedidos" + " SET carrito=? WHERE idpedidos=?";
+    private static final String SQL_UPDATE_descripcion = "UPDATE pedidos" + " SET descripcion=? WHERE idpedidos=?";
     private static final String SQL_UPDATE_ESTADO2 = "UPDATE pedidos" + " SET estado=?, subtotal=?, total=?, fecha=? WHERE idpedidos=?";
     private static final String SQL_DELETE = "DELETE FROM pedidos WHERE idpedidos = ?";
 
@@ -148,6 +149,39 @@ public class PedidoDAO {
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_UPDATE_CARRITO);
             stmt.setInt(1, pedido.getCarrito());
+            stmt.setInt(2, pedido.getIdPedido());
+
+            rows = stmt.executeUpdate();
+            
+            sw = true;
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return sw;
+    }
+    
+    public boolean updatedescripcion(Pedido pedido) throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;//Registros modificados
+        boolean sw = false;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_UPDATE_descripcion);
+            stmt.setString(1, pedido.getDescripcion());
             stmt.setInt(2, pedido.getIdPedido());
 
             rows = stmt.executeUpdate();
@@ -339,7 +373,8 @@ public class PedidoDAO {
                 int total = rs.getInt("total");
                 int year = rs.getInt("yearf");
                 int month = rs.getInt("monthf");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
+                String descripcion = rs.getString("descripcion");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion);
             }
 
         } catch (SQLException ex) {
@@ -381,7 +416,8 @@ public class PedidoDAO {
                 int total = rs.getInt("total");
                 int year = rs.getInt("yearf");
                 int month = rs.getInt("monthf");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
+                String descripcion = rs.getString("descripcion");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion);
             }
 
         } catch (SQLException ex) {
@@ -492,7 +528,8 @@ public class PedidoDAO {
                 int total = rs.getInt("total");
                 int year = rs.getInt("yearf");
                 int month = rs.getInt("monthf");
-                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
+                String descripcion = rs.getString("descripcion");
+                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month,descripcion);
                 pedidos.add(pedido);
             }
 
@@ -538,7 +575,8 @@ public class PedidoDAO {
                 int total = rs.getInt("total");
                 year = rs.getInt("yearf");
                 month = rs.getInt("monthf");
-                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month);
+                String descripcion = rs.getString("descripcion");
+                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion);
                 pedidos.add(pedido);
             }
 

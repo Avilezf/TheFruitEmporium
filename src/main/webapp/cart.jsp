@@ -104,7 +104,8 @@
                         </div>
                         <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Aplicar cupón</a></p>
                     </div>
-                    
+
+
                     <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
                         <!--
                         <div class="cart-total mb-3">
@@ -128,7 +129,7 @@
                         <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Estimate</a></p>
                         -->
                     </div>
-                    
+
                     <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
                         <div class="cart-total mb-3">
                             <h3>Total del Carrito</h3>
@@ -152,15 +153,24 @@
                                 <span>&#36; ${envio}</span>
                             </p>
                         </div>
-                            
-                            <form action="${pageContext.request.contextPath}/CheckOutController?accion=checkout" method="POST">
+
+                        <form action="${pageContext.request.contextPath}/CheckOutController?accion=checkout" method="POST">
+                            <h6>Observaciones</h6>
+                            <div class="cart-total mb-3">
+                                <div class="form-group">
+                                    <textarea type="text" name = "descripcion" id = "descripcion" class="text-left form-control" style="border-color: #bbb !important; height: 100px !important;" rows="5" placeholder="- Tomates grandes" ></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-end">
                                 <input type="hidden" name="pedido" id="pedido" value="${pedido}">
                                 <input type="hidden" name="subtotal" id="subtotal" value="${sum}">
                                 <input type="hidden" name="total" id="total" value="${envio}">
                                 <input type="hidden" name="usuario" id="usuario" value="${usuario}">
-                               <button id="luis" type="submit" class="btn btn-black py-3 px-4">Continuar con el pago</button>
-                            </form>
-                        
+                                <button id="luis" type="submit" class="btn btn-black py-3 px-4">Continuar con el pago</button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
