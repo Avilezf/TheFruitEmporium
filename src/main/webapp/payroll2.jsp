@@ -69,7 +69,7 @@
                             <p>1) Ingresas el monto y envias. TOTAL A PAGAR = ${pedido.total}</p><br>
                             <p>2) Envia un correo o un mensaje de Whatsapp con el comprobante de pago y el Número del pedido = ${pedido.idPedido}</p><br>
                             <p>3) Espera la verificación por parte de nuestros asesores</p>
-                            <p><a href="${pageContext.request.contextPath}/ServletControlador?accion=home" class="btn btn-primary">Volver</a></p>
+                            <p><a href="${pageContext.request.contextPath}/StoreController?accion=home" class="btn btn-primary">Volver</a></p>
                         </div>
                     </div>
                 </div>

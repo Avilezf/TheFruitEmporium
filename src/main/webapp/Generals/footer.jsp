@@ -23,9 +23,9 @@
                 <div class="ftco-footer-widget mb-4 ml-md-5">
                     <h2 class="ftco-heading-2">Menu</h2>
                     <ul class="list-unstyled">
-                        <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="py-2 d-block">Comprar</a></li>
-                        <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=about" class="py-2 d-block">Sobre Nosotros</a></li>
-                        <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=contact" class="py-2 d-block">Contacto</a></li>
+                        <li><a href="${pageContext.request.contextPath}/StoreController?accion=shop0" class="py-2 d-block">Comprar</a></li>
+                        <li><a href="${pageContext.request.contextPath}/StoreController?accion=about" class="py-2 d-block">Sobre Nosotros</a></li>
+                        <li><a href="${pageContext.request.contextPath}/StoreController?accion=contact" class="py-2 d-block">Contacto</a></li>
                     </ul>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                         </ul>
                         <ul class="list-unstyled">
                             <li><a href="#" class="py-2 d-block">FAQs</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=contact" class="py-2 d-block">Contacto</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ServletControlador?accion=login" class="py-2 d-block">Admin</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=contact" class="py-2 d-block">Contacto</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=login" class="py-2 d-block">Admin</a></li>
                         </ul>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
             <div class="col-md-12 text-center">
 
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <a href="www.clsma.com.co:8080/ClsmaPage-2.1" target="_blank">BNT SAS</a> &copy; 2020 
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved <a href="35.209.198.99:8080/ClsmaPage-2.1" target="_blank">BNT SAS</a> &copy; 2020 
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </p>
             </div>

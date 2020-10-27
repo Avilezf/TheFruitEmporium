@@ -38,7 +38,7 @@
             <div class="container">
                 <div class="row no-gutters slider-text align-items-center justify-content-center">
                     <div class="col-md-9 ftco-animate text-center">
-                        <p class="breadcrumbs"><span class="mr-2"><a href="${pageContext.request.contextPath}/ServletControlador?accion=home">Home</a></span> <span>Productos</span></p>
+                        <p class="breadcrumbs"><span class="mr-2"><a href="${pageContext.request.contextPath}/StoreController?accion=home">Home</a></span> <span>Productos</span></p>
                         <h1 class="mb-0 bread">Productos</h1>
                     </div>
                 </div>
@@ -50,11 +50,11 @@
                 <div class="row justify-content-center">
                     <div class="col-md-10 mb-5 text-center">
                         <ul class="product-category">
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="${active.get(0)}" >Todo</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop1" class="${active.get(1)}">Verduras</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop2" class="${active.get(2)}">Frutas</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop3" class="${active.get(3)}">Pulpa</a></li>
-                            <li><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop4" class="${active.get(4)}">Secos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=shop0" class="${active.get(0)}" >Todo</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=shop1" class="${active.get(1)}">Verduras</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=shop2" class="${active.get(2)}">Frutas</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=shop3" class="${active.get(3)}">Jugos</a></li>
+                            <li><a href="${pageContext.request.contextPath}/StoreController?accion=shop4" class="${active.get(4)}">Secos</a></li>
                         </ul>
                     </div>
                 </div>

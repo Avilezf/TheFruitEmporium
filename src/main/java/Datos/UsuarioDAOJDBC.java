@@ -1,6 +1,6 @@
 package Datos;
 
-import Dominio.Usuario;
+import Model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.*;
 import java.util.*;

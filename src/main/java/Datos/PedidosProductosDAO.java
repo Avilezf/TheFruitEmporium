@@ -1,9 +1,9 @@
 package Datos;
 
-import Dominio.Pedido;
-import Dominio.PedidosProductos;
-import Dominio.Producto;
-import Dominio.Usuario;
+import Model.Pedido;
+import Model.PedidosProductos;
+import Model.Producto;
+import Model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.*;
 import java.util.*;

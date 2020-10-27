@@ -154,7 +154,7 @@
                             </p>
                         </div>
 
-                        <form action="${pageContext.request.contextPath}/CheckOutController?accion=checkout" method="POST">
+                        <form action="${pageContext.request.contextPath}/PaidController?accion=checkout" method="POST">
                             <h6>Observaciones</h6>
                             <div class="cart-total mb-3">
                                 <div class="form-group">

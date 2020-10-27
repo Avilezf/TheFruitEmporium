@@ -1,1 +1,1 @@
-<meta http-equiv="refresh" content="0;url=${pageContext.request.contextPath}/ServletControlador?accion=home">
+<meta http-equiv="refresh" content="0;url=${pageContext.request.contextPath}/StoreController?accion=home">

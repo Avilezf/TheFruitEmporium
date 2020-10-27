@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Web;
 
 import Datos.PedidoDAO;
@@ -10,13 +5,13 @@ import Datos.PedidosProductosDAO;
 import Datos.ProductoDAO;
 import Datos.SendMail;
 import Datos.UsuarioDAOJDBC;
-import Dominio.Pedido;
-import Dominio.PedidosProductos;
-import Dominio.Producto;
-import Dominio.Usuario;
+import Model.Pedido;
+import Model.PedidosProductos;
+import Model.Producto;
+import Model.Usuario;
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,14 +21,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
 /**
- *
- * @author CL SMA
+ *  Paid Controller: In charge of the payment part of the software
+ * 
+ * @author Ing. Luis Llanos / BNT SAS
+ * @version Fruit 2.0
  */
 @WebServlet("/PaidController")
 public class PaidController extends HttpServlet {
@@ -43,27 +35,6 @@ public class PaidController extends HttpServlet {
         String accion = request.getParameter("accion");
         String path = ""; //Dirección para llegar al jsp
         if (accion != null) {
-            if (accion.equals("trash")) {
-
-                try {
-                    String ide = request.getParameter("idProducto");
-                    Producto producto = new ProductoDAO().buscarId(Integer.getInteger(ide));
-                    File f = new File("D:\\Documentos\\Proyectos\\TheFruitEmporium\\TheFruitEmporium\\src\\main\\webapp\\" + producto.getImg());
-                    if (f.delete()) {
-                        System.out.println("Image Deleted...");
-                        boolean ok = new ProductoDAO().eliminar(ide);
-                        if (ok) {
-                            System.out.println("Prodcuto Deleted");
-                            path = "/redirect3.jsp";
-                            request.getRequestDispatcher(path).forward(request, response);
-                        }
-                    }
-
-                } catch (InstantiationException | IllegalAccessException ex) {
-                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
             try {
                 String ip = request.getRemoteHost();
 
@@ -90,7 +61,6 @@ public class PaidController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String accion = request.getParameter("accion");
-
         String path = ""; //Dirección para llegar al jsp
         if (accion != null) {
             switch (accion) {
@@ -134,99 +104,42 @@ public class PaidController extends HttpServlet {
                     } catch (InstantiationException | IllegalAccessException ex) {
                         Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (Exception ex) {
-                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                     break;
 
-
-                case "agregar":
-                    //Producto
-                    nombre = "";
-                    String precio = "";
-                    String cantidad = "";
-                    String categoria = "";
-                    String img = "";
-                    String id = "";
-                    ServletFileUpload sf = new ServletFileUpload(new DiskFileItemFactory());
+                case "checkout":
+                    String idusuario = request.getParameter("usuario");
+                    String idpedido = request.getParameter("pedido");
+                    subtotal = request.getParameter("subtotal");
+                    String descripcion = request.getParameter("descripcion");
+                    total = request.getParameter("total");
+                    path = ""; //Dirección para llegar al jsp
 
                     try {
-                        int num = 0;
-                        List<FileItem> files = sf.parseRequest(request);
-                        for (FileItem file : files) {
-                            if (file.isFormField()) {
-                                switch (num) {
-                                    case 0:
-                                        nombre = file.getString();
-                                        break;
+                        //Se recupera el usuario
+                        Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(idusuario));
 
-                                    case 1:
-                                        precio = file.getString();
-                                        break;
+                        request.setAttribute("usuario", usuario);
+                        request.setAttribute("idpedido", idpedido);
+                        request.setAttribute("subtotal", subtotal);
+                        request.setAttribute("total", total);
 
-                                    case 2:
-                                        cantidad = file.getString();
-                                        break;
-
-                                    case 3:
-                                        categoria = file.getString();
-                                        break;
-
-                                    case 4:
-                                        img = file.getString();
-                                        break;
-
-                                    case 5:
-                                        id = file.getString();
-                                        break;
-                                }
-                            } else {
-                                file.write(new File("D:\\Documentos\\Proyectos\\TheFruitEmporium\\TheFruitEmporium\\src\\main\\webapp\\" + img));
+                        if (!descripcion.isEmpty()) {
+                            //Enviar la descripción
+                            Pedido pedido = new Pedido(Integer.parseInt(idpedido), descripcion);
+                            boolean sw = new PedidoDAO().updatedescripcion(pedido);
+                            if (sw) {
+                                this.accionDefault(request, response, path, accion);
                             }
-                            num++;
+                        } else {
+                            this.accionDefault(request, response, path, accion);
                         }
-                    } catch (FileUploadException ex) {
-                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (Exception ex) {
+
+                    } catch (InstantiationException | IllegalAccessException ex) {
                         Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    System.out.println("Uploaded...");
-
-                    if (id == null || id.equals("")) {
-                        try {
-                            //Crear producto
-                            Producto producto = new Producto(nombre, Integer.parseInt(precio), Integer.parseInt(cantidad), img, Integer.parseInt(categoria));
-                            boolean ok = new ProductoDAO().insertar(producto);
-                            if (ok) {
-                                path = "/redirect3.jsp";
-                                request.getRequestDispatcher(path).forward(request, response);
-
-                            }
-                        } catch (InstantiationException | IllegalAccessException ex) {
-                            Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    } else {
-                        //Modificar producto
-                        try {
-                            //UPDATE producto
-                            Producto producto = new ProductoDAO().buscarId(Integer.parseInt(id));
-                            producto.setNombre(nombre);
-                            producto.setPrecio(Integer.parseInt(precio));
-                            producto.setCantidad(Integer.parseInt(cantidad));
-                            producto.setCategoria(Integer.parseInt(categoria));
-                            producto.setImg(img);
-                            boolean ok = new ProductoDAO().actualizar(producto);
-                            if (ok) {
-                                path = "/redirect3.jsp";
-                                request.getRequestDispatcher(path).forward(request, response);
-
-                            }
-
-                        } catch (InstantiationException | IllegalAccessException ex) {
-                            Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
                     break;
 
             }
@@ -246,10 +159,12 @@ public class PaidController extends HttpServlet {
         Usuario usuario = new UsuarioDAOJDBC().ip(temp);
         Date date = new Date();
         String fecha = date.toString();
-        int month = date.getMonth();
-        int year = date.getYear();
-
-        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year)); //busca el id del usuario para verificar si tiene pedidos
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+        int day = calendar.get(Calendar.DATE);
+        int week = calendar.get(Calendar.WEEK_OF_YEAR);
+        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year, day, week)); //busca el id del usuario para verificar si tiene pedidos
 
         if (pedido.getEstado() != 1) {//Si es igual a 0, el pedido o está cancelado
             path = "/home.jsp";
@@ -363,8 +278,5 @@ public class PaidController extends HttpServlet {
 
     }
 
-    private Object ProductoDAO() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }

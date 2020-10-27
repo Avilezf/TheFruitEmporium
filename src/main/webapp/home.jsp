@@ -43,7 +43,7 @@
                             <div class="col-md-12 ftco-animate text-center">
                                 <h1 class="mb-2">Ofrecemos a la venta Frutas &amp; Verduras </h1>
                                 <h2 class="subheading mb-4">Con entrega a domicilio</h2>
-                                <p><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="btn btn-primary">Ver detalles</a></p>
+                                <p><a href="${pageContext.request.contextPath}/StoreController?accion=shop0" class="btn btn-primary">Ver detalles</a></p>
                             </div>
 
                         </div>
@@ -58,7 +58,7 @@
                             <div class="col-sm-12 ftco-animate text-center">
                                 <h1 class="mb-2"> Frutas y verduras 100% Frescas </h1>
                                 <h2 class="subheading mb-4">Con entrega a domicilio</h2>
-                                <p><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="btn btn-primary">Ver detalles</a></p>
+                                <p><a href="${pageContext.request.contextPath}/StoreController?accion=shop0" class="btn btn-primary">Ver detalles</a></p>
                             </div>
 
                         </div>
@@ -127,20 +127,20 @@
                                 <div class="category-wrap-2 ftco-animate img align-self-stretch d-flex" style="background-image: url(images/category.jpg);">
                                     <div class="text text-center">
                                         <h2>Productos</h2>
-                                        <p>Protejiendo la salud de cada hogar</p>
-                                        <p><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="btn btn-primary">Compra ahora</a></p>
+                                        <p>Protegiendo la salud de cada hogar</p>
+                                        <p><a href="${pageContext.request.contextPath}/StoreController?accion=shop0" class="btn btn-primary">Compra ahora</a></p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url(images/category-1.jpg);">
                                     <div class="text px-3 py-1">
-                                        <h2 class="mb-0"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop1">Vegetales</a></h2>
+                                        <h2 class="mb-0"><a href="${pageContext.request.contextPath}/StoreController?accion=shop1">Vegetales</a></h2>
                                     </div>
                                 </div>
                                 <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(images/category-2.jpg);">
                                     <div class="text px-3 py-1">
-                                        <h2 class="mb-0"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop2">Frutas</a></h2>
+                                        <h2 class="mb-0"><a href="${pageContext.request.contextPath}/StoreController?accion=shop2">Frutas</a></h2>
                                     </div>
                                 </div>
                             </div>
@@ -150,12 +150,12 @@
                     <div class="col-md-4">
                         <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url(images/category-3.jpg);">
                             <div class="text px-3 py-1">
-                                <h2 class="mb-0"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop3">Pulpa</a></h2>
+                                <h2 class="mb-0"><a href="${pageContext.request.contextPath}/StoreController?accion=shop3">Jugos</a></h2>
                             </div>		
                         </div>
                         <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(images/category-4.jpg);">
                             <div class="text px-3 py-1">
-                                <h2 class="mb-0"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop4">Secos</a></h2>
+                                <h2 class="mb-0"><a href="${pageContext.request.contextPath}/StoreController?accion=shop4">Secos</a></h2>
                             </div>
                         </div>
                     </div>

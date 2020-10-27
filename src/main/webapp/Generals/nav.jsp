@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-        <a class="navbar-brand" href="${pageContext.request.contextPath}/ServletControlador?accion=home">The Fruit Emporium</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/StoreController?accion=home">The Fruit Emporium</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> Menú
         </button>
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="${pageContext.request.contextPath}/ServletControlador?accion=home" class="nav-link">Inicio</a></li>
+                <li class="nav-item active"><a href="${pageContext.request.contextPath}/StoreController?accion=home" class="nav-link">Inicio</a></li>
                 <!--
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tienda</a>
@@ -21,10 +21,10 @@
                     </div>
                 </li>
                 -->
-                <li class="nav-item"><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="nav-link">Tienda</a></li>
-                <li class="nav-item"><a href="${pageContext.request.contextPath}/ServletControlador?accion=about" class="nav-link">Sobre nosotros</a></li>
+                <li class="nav-item"><a href="${pageContext.request.contextPath}/StoreController?accion=shop0" class="nav-link">Tienda</a></li>
+                <li class="nav-item"><a href="${pageContext.request.contextPath}/StoreController?accion=about" class="nav-link">Sobre nosotros</a></li>
                 <!--<li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
-                <li class="nav-item"><a href="${pageContext.request.contextPath}/ServletControlador?accion=contact" class="nav-link">Contacto</a></li>
+                <li class="nav-item"><a href="${pageContext.request.contextPath}/StoreController?accion=contact" class="nav-link">Contacto</a></li>
                 <li class="nav-item cta cta-colored"><a class="nav-link" href="${pageContext.request.contextPath}/PaidController?accion=cart"><span class="icon-shopping_cart"></span>[${carrito}]</a></li>
 
             </ul>

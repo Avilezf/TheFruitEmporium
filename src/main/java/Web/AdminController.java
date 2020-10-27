@@ -10,11 +10,13 @@ import Datos.PedidosProductosDAO;
 import Datos.ProductoDAO;
 import Datos.SendMail;
 import Datos.UsuarioDAOJDBC;
-import Dominio.Pedido;
-import Dominio.Producto;
-import Dominio.Usuario;
+import Model.Pedido;
+import Model.Producto;
+import Model.Usuario;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,10 +25,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
+ * Admin Controller: Is the one in charge of all the admin part
  *
- * @author CL SMA
+ * @author Ing. Luis Llanos / BNT SAS
+ * @version 2.0
  */
 @WebServlet("/AdminController")
 public class AdminController extends HttpServlet {
@@ -36,6 +44,13 @@ public class AdminController extends HttpServlet {
         String accion = request.getParameter("accion");
         String path; //Dirección para llegar al jsp
         if (accion != null) {
+            if (accion.length() > 4) {
+                if (accion.substring(0, 4).equals("list")) {
+                    path = "";
+                    this.List(request, response, path, accion);
+                }
+            }
+
             switch (accion) {
                 case "pedidos": 
                     try {
@@ -91,17 +106,40 @@ public class AdminController extends HttpServlet {
                 }
                 break;
 
-//                case "addproduct":
-//
-//                    break;
-//
-//                case "drpproduct":
-//
-//                    break;
-//
-//                case "modproduct":
-//
-//                    break;                
+                case "dashboard": {
+                    path = "";
+                    try {
+                        this.dashboard(request, response, path);
+
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+                break;
+
+                case "trash":
+                     try {
+                    String ide = request.getParameter("idProducto");
+                    Producto producto = new ProductoDAO().buscarId(Integer.getInteger(ide));
+                    //Reemplazar
+                    File f = new File("/" + producto.getImg());
+                    if (f.delete()) {
+                        System.out.println("Image Deleted...");
+                        boolean ok = new ProductoDAO().eliminar(ide);
+                        if (ok) {
+                            System.out.println("Prodcuto Deleted");
+                            path = "/redirect3.jsp";
+                            request.getRequestDispatcher(path).forward(request, response);
+                        }
+                    }
+
+                } catch (InstantiationException | IllegalAccessException ex) {
+                    Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                break;
+
                 default:
                     path = "/home.jsp";
                     request.getRequestDispatcher(path).forward(request, response);
@@ -116,13 +154,13 @@ public class AdminController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String accion = request.getParameter("accion");
-
+        String path = "";
         if (accion != null) {
             switch (accion) {
                 case "registro": {
                     try {
                         this.registro(request, response);
-                        String path = "/admin3.jsp";
+                        path = "/admin3.jsp";
                         request.getRequestDispatcher(path).forward(request, response);
                     } catch (InstantiationException | IllegalAccessException ex) {
                         Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
@@ -138,7 +176,7 @@ public class AdminController extends HttpServlet {
                     }
                 }
                 break;
-                
+
                 case "no": {
                     try {
                         this.no(request, response);
@@ -147,6 +185,135 @@ public class AdminController extends HttpServlet {
                     }
                 }
                 break;
+
+                case "agregar":
+                    //Producto
+                    String nombre = "";
+                    String precio = "";
+                    String cantidad = "";
+                    String categoria = "";
+                    String img = "";
+                    String id = "";
+                    ServletFileUpload sf = new ServletFileUpload(new DiskFileItemFactory());
+
+                    try {
+                        int num = 0;
+                        List<FileItem> files = sf.parseRequest(request);
+                        for (FileItem file : files) {
+                            if (file.isFormField()) {
+                                switch (num) {
+                                    case 0:
+                                        nombre = file.getString();
+                                        break;
+
+                                    case 1:
+                                        precio = file.getString();
+                                        break;
+
+                                    case 2:
+                                        cantidad = file.getString();
+                                        break;
+
+                                    case 3:
+                                        categoria = file.getString();
+                                        break;
+
+                                    case 4:
+                                        img = file.getString();
+                                        break;
+
+                                    case 5:
+                                        id = file.getString();
+                                        break;
+                                }
+                            } else {
+                                //Reemplazar
+                                file.write(new File("/" + img));
+                            }
+                            num++;
+                        }
+                    } catch (FileUploadException ex) {
+                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Exception ex) {
+                        Logger.getLogger(PaidController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println("Uploaded...");
+
+                    if (id == null || id.equals("")) {
+                        try {
+                            //Crear producto
+                            Producto producto = new Producto(nombre, Integer.parseInt(precio), Integer.parseInt(cantidad), img, Integer.parseInt(categoria));
+                            boolean ok = new ProductoDAO().insertar(producto);
+                            if (ok) {
+                                path = "/redirect3.jsp";
+                                request.getRequestDispatcher(path).forward(request, response);
+
+                            }
+                        } catch (InstantiationException | IllegalAccessException ex) {
+                            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        //Modificar producto
+                        try {
+                            //UPDATE producto
+                            Producto producto = new ProductoDAO().buscarId(Integer.parseInt(id));
+                            producto.setNombre(nombre);
+                            producto.setPrecio(Integer.parseInt(precio));
+                            producto.setCantidad(Integer.parseInt(cantidad));
+                            producto.setCategoria(Integer.parseInt(categoria));
+                            producto.setImg(img);
+                            boolean ok = new ProductoDAO().actualizar(producto);
+                            if (ok) {
+                                path = "/redirect3.jsp";
+                                request.getRequestDispatcher(path).forward(request, response);
+
+                            }
+
+                        } catch (InstantiationException | IllegalAccessException ex) {
+                            Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                    break;
+
+                case "add":
+                    path = "/object.jsp"; //Dirección para llegar al jsp
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "mod":
+                    String idProducto = request.getParameter("idProducto");
+                    path = ""; //Dirección para llegar al jsp
+
+                    try {
+                        //Se recupera el usuario
+                        Producto producto = new ProductoDAO().buscarId(Integer.parseInt(idProducto));
+                        request.setAttribute("producto", producto);
+                        path = "/object.jsp"; //Dirección para llegar al jsp
+                        request.getRequestDispatcher(path).forward(request, response);
+                    } catch (InstantiationException | IllegalAccessException ex) {
+                        Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+
+                case "login":
+                    String usuario = request.getParameter("username");
+                    String password = request.getParameter("pass");
+                    if (usuario.equals("admin")) {
+                        if (password.equals("llanosperez")) {
+                            //Entró
+                            path = "/redirect2.jsp";
+                            request.getRequestDispatcher(path).forward(request, response);
+                        } else {
+                            path = "/login.jsp";
+                            request.getRequestDispatcher(path).forward(request, response);
+                        }
+                    } else {
+                        path = "/login.jsp";
+                        request.getRequestDispatcher(path).forward(request, response);
+                    }
+
+                    break;
             }
 
         } else {
@@ -246,14 +413,14 @@ public class AdminController extends HttpServlet {
         //SendEmail
         Usuario usuario = new UsuarioDAOJDBC().realId(new Usuario(pedido.getIdCliente()));
         SendMail.sendValidator(usuario.getEmail(), pedido);
-        
+
         if (ok) {
             this.envios(request, response);
             String path = "/admin2.jsp";
             request.getRequestDispatcher(path).forward(request, response);
         }
     }
-    
+
     private void no(HttpServletRequest request, HttpServletResponse response) throws InstantiationException, IllegalAccessException, ServletException, IOException {
         String idPedido = request.getParameter("pedido");
         Pedido pedido = new PedidoDAO().realId(new Pedido(Integer.parseInt(idPedido)));
@@ -302,6 +469,108 @@ public class AdminController extends HttpServlet {
             //No existen envios disponibles
 
         }
+    }
+
+    private void List(HttpServletRequest request, HttpServletResponse response, String path, String accion) throws ServletException, IOException {
+        try {
+            String num = accion.substring(4, 5);
+            List<Producto> productos = new ProductoDAO().listar(num);
+            request.setAttribute("productos", productos);
+            List<String> numact = add(Integer.parseInt(num));
+            request.setAttribute("active", numact);
+            String carrito = request.getParameter("carrito");
+            request.setAttribute("carrito", carrito);
+            switch (num) {
+                case "0"://Shopping Default
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "1"://Shopping Fruits
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "2"://Shopping Vegetables
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "3"://Shopping Juices
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+                case "4"://Shopping Dried
+                    path = "/products.jsp";
+                    request.getRequestDispatcher(path).forward(request, response);
+                    break;
+
+            }
+        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException ex) {
+            System.out.println("--------------------------------Error-------------------------------");
+            Logger.getLogger(StoreController.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("--------------------------------Error-------------------------------");
+        }
+    }
+
+    private List<String> add(int num) {
+        List<String> numero = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            numero.add("");
+        }
+        numero.set(num, "active");
+        numero.set(5, String.valueOf(num));
+        return numero;
+    }
+
+    private void dashboard(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, InstantiationException, IllegalAccessException {
+        List<Pedido> confirm = new PedidoDAO().estado2(2);
+        List<Pedido> send = new PedidoDAO().estado2(3);
+        List<Pedido> complete = new PedidoDAO().estado2(4);
+        int sells = new PedidoDAO().sells();
+
+        int year[] = new int[12];
+        for (int i = 0; i < year.length; i++) {
+            year[i] = 0;
+        }
+        int weeksells[] = new int[7];
+        int weekbuy[] = new int[7];
+        for (int i = 0; i < weeksells.length; i++) {
+            weeksells[i] = 0;
+            weekbuy[i] = 0;
+        }
+
+        //Mensual sells
+        Calendar today = Calendar.getInstance();
+        for (Pedido pedido : complete) {
+            year[pedido.getMonth()] = year[pedido.getMonth()] + 1;
+            int todaysweek = today.get(Calendar.WEEK_OF_YEAR);
+            if (pedido.getWeek() == todaysweek) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(pedido.getYear(), pedido.getMonth(), pedido.getDay());
+                weeksells[calendar.get(Calendar.DAY_OF_WEEK)] = weeksells[calendar.get(Calendar.DAY_OF_WEEK)] + pedido.getTotal();
+            }
+        }
+
+        for (Pedido pedido : confirm) {
+            int todaysweek = today.get(Calendar.WEEK_OF_YEAR);
+            if (pedido.getWeek() == todaysweek) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(pedido.getYear(), pedido.getMonth(), pedido.getDay());
+                weekbuy[calendar.get(Calendar.DAY_OF_WEEK)] = weekbuy[calendar.get(Calendar.DAY_OF_WEEK)] + 1;
+            }
+        }
+
+        request.setAttribute("confirm", confirm.size());
+        request.setAttribute("send", send.size());
+        request.setAttribute("complete", complete.size());
+        request.setAttribute("sells", sells);
+        request.setAttribute("year", year);
+        request.setAttribute("weeksells", weeksells);
+        request.setAttribute("weekbuy", weekbuy);
+        path = "/dashboard.jsp";
+        request.getRequestDispatcher(path).forward(request, response);
     }
 
 }

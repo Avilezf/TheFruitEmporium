@@ -9,11 +9,12 @@ import Datos.PedidoDAO;
 import Datos.PedidosProductosDAO;
 import Datos.ProductoDAO;
 import Datos.UsuarioDAOJDBC;
-import Dominio.Pedido;
-import Dominio.PedidosProductos;
-import Dominio.Producto;
-import Dominio.Usuario;
+import Model.Pedido;
+import Model.PedidosProductos;
+import Model.Producto;
+import Model.Usuario;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,8 +42,11 @@ public class CartController extends HttpServlet {
                 int cant = Integer.parseInt(request.getParameter("Cantidad"));
                 int order = Integer.parseInt(request.getParameter("Order"));
                 Date date = new Date();
-                int month = date.getMonth();
-                int year = 1900 + date.getYear();
+                Calendar calendar = Calendar.getInstance();
+                int month = calendar.get(Calendar.MONTH) + 1;
+                int year = calendar.get(Calendar.YEAR);
+                int day = calendar.get(Calendar.DATE);
+                int week = calendar.get(Calendar.WEEK_OF_YEAR);
                 String fecha = date.toString();
                 String ip = request.getRemoteHost();
 
@@ -52,9 +56,9 @@ public class CartController extends HttpServlet {
 
                 boolean sw2 = new UsuarioDAOJDBC().ip(ip);
                 if (sw2) {
-                    ActualUser(request, response, ip, path, order, ide, fecha, cant, month, year);
+                    ActualUser(request, response, ip, path, order, ide, fecha, cant, month, year, day, week);
                 } else {
-                    NotActualUser(request, response, ip, path, order, ide, fecha, cant, month, year);
+                    NotActualUser(request, response, ip, path, order, ide, fecha, cant, month, year, day, week);
                 }
 
             } catch (InstantiationException | IllegalAccessException ex) {
@@ -76,8 +80,11 @@ public class CartController extends HttpServlet {
                 int cant = Integer.parseInt(request.getParameter("quantity"));
                 int order = 0;
                 Date date = new Date();
-                int month = date.getMonth();
-                int year = date.getYear();
+                Calendar calendar = Calendar.getInstance();
+                int month = calendar.get(Calendar.MONTH) + 1;
+                int year = calendar.get(Calendar.YEAR);
+                int day = calendar.get(Calendar.DATE);
+                int week = calendar.get(Calendar.WEEK_OF_YEAR);
                 String fecha = date.toString();
                 String ip = request.getRemoteHost();
 
@@ -87,9 +94,9 @@ public class CartController extends HttpServlet {
 
                 boolean sw2 = new UsuarioDAOJDBC().ip(ip);
                 if (sw2) {
-                    ActualUser(request, response, ip, path, order, ide, fecha, cant, month, year);
+                    ActualUser(request, response, ip, path, order, ide, fecha, cant, month, year, day, week);
                 } else {
-                    NotActualUser(request, response, ip, path, order, ide, fecha, cant, month, year);
+                    NotActualUser(request, response, ip, path, order, ide, fecha, cant, month, year, day, week);
                 }
 
             } catch (InstantiationException | IllegalAccessException ex) {
@@ -105,19 +112,19 @@ public class CartController extends HttpServlet {
         request.getRequestDispatcher(path).forward(request, response);
     }
 
-    private void ActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant, int month, int year) throws ServletException, IOException, InstantiationException, IllegalAccessException {
+    private void ActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant, int month, int year, int day, int week) throws ServletException, IOException, InstantiationException, IllegalAccessException {
         //Usar usuario existente
         Usuario temp = new Usuario(ip);
         Usuario usuario = new UsuarioDAOJDBC().ip(temp);
 
-        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year)); //busca el id del usuario para verificar si tiene pedidos
+        Pedido pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year, day, week)); //busca el id del usuario para verificar si tiene pedidos
 
         if (pedido.getEstado() != 1) {//Si es igual a 0, el pedido o está cancelado
 
             //Crear nuevo pedido
-            boolean ok = new PedidoDAO().nuevo(new Pedido(usuario.getIdUsuario(), fecha, month, year));
+            boolean ok = new PedidoDAO().nuevo(new Pedido(usuario.getIdUsuario(), fecha, month, year, day, week));
             if (ok) {
-                pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year));
+                pedido = new PedidoDAO().id(new Pedido(usuario.getIdUsuario(), fecha, month, year, day, week));
                 boolean estado = new PedidosProductosDAO().nuevo(new PedidosProductos(pedido.getIdPedido(), ide, cant));
                 if (estado) {//Si es diferente de 0, eso significa que sí pasó
                     //Reenviar
@@ -156,7 +163,7 @@ public class CartController extends HttpServlet {
         }
     }
 
-    private void NotActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant, int month, int year) throws ServletException, IOException, InstantiationException, IllegalAccessException {
+    private void NotActualUser(HttpServletRequest request, HttpServletResponse response, String ip, String path, int order, int ide, String fecha, int cant, int month, int year, int day, int week) throws ServletException, IOException, InstantiationException, IllegalAccessException {
         //Crear el usuario
         Usuario temp = new Usuario(ip);
         int sw = new UsuarioDAOJDBC().insertar(temp);
@@ -164,7 +171,7 @@ public class CartController extends HttpServlet {
         if (sw != 0) {
             Usuario usuario = new UsuarioDAOJDBC().ip(temp);
             //Creamos un pedido
-            Pedido p = new Pedido(usuario.getIdUsuario(), 1, 1, fecha, month, year);
+            Pedido p = new Pedido(usuario.getIdUsuario(), 1, 1, fecha, month, year, day, week);
             boolean n = new PedidoDAO().nuevo(p);
             if (n) {
                 Pedido pedido = new PedidoDAO().id(p);

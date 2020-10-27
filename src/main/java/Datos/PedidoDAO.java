@@ -1,10 +1,12 @@
 package Datos;
 
-import Dominio.Pedido;
-import Dominio.Producto;
-import Dominio.Usuario;
+import Model.Pedido;
+import Model.Producto;
+import Model.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,11 +18,10 @@ import javax.servlet.http.HttpSession;
  */
 public class PedidoDAO {
 
-    private static final String SQL_SELECT_EXAMEN = "SELECT id_Examen, nombreExamen, asignatura, calificacion" + " FROM examen";
     private static final String SQL_SELECT = "SELECT *" + " FROM productos ORDER BY nombre";
     private static final String SQL_SELECT2 = "SELECT *" + " FROM productos WHERE categoria = ?";
     private static final String SQL_SELECT21 = "SELECT *" + " FROM productos WHERE categoria = ? LIMIT 4";
-    private static final String SQL_SELECT_USUARIO = "SELECT * " + "FROM users";
+    private static final String SQL_SELECT_SELLS = "select sum(total) from pedidos where pedidos.estado = 4 and monthf = ?";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM pedidos WHERE idpedidos = ?";
     private static final String SQL_SELECT_ESTADO2 = "SELECT * FROM pedidos WHERE estado = 2";
     private static final String SQL_SELECT_ESTADOX = "SELECT * FROM pedidos WHERE estado = ?";
@@ -30,7 +31,7 @@ public class PedidoDAO {
     private static final String SQL_SELECT_BY_IDCLIENTE = "SELECT * FROM pedidos WHERE idcliente = ? ORDER BY idpedidos DESC LIMIT 1";
     private static final String SQL_INSERT = "INSERT INTO usuario(nombre, apellido, email, rol) " + " VALUES(?,?,?,?)";
     private static final String SQL_INSERT_USR = " INSERT INTO users(namusr, lasusr, maiusr, pasusr) " + "VALUES (?,?,?,?)";
-    private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha, subtotal, total, yearf, monthf) " + "VALUES (?,?,?,?,?,?,?,?)";
+    private static final String SQL_INSERT_PEDIDO = " INSERT INTO pedidos(idcliente, estado, carrito, fecha, subtotal, total, yearf, monthf, dayf, week) " + "VALUES (?,?,?,?,?,?,?,?,?,?)";
     private static final String SQL_UPDATE_ESTADO = "UPDATE pedido" + " SET estado=? WHERE idpedido=?";
     private static final String SQL_UPDATE_CARRITO = "UPDATE pedidos" + " SET carrito=? WHERE idpedidos=?";
     private static final String SQL_UPDATE_descripcion = "UPDATE pedidos" + " SET descripcion=? WHERE idpedidos=?";
@@ -118,6 +119,8 @@ public class PedidoDAO {
             stmt.setInt(6, pedido.getTotal());
             stmt.setInt(7, pedido.getYear());
             stmt.setInt(8, pedido.getMonth());
+            stmt.setInt(9, pedido.getDay());
+            stmt.setInt(10, pedido.getWeek());
 
             rows = stmt.executeUpdate();
             sw = true;
@@ -152,9 +155,9 @@ public class PedidoDAO {
             stmt.setInt(2, pedido.getIdPedido());
 
             rows = stmt.executeUpdate();
-            
+
             sw = true;
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } catch (ClassNotFoundException ex) {
@@ -166,7 +169,7 @@ public class PedidoDAO {
 
         return sw;
     }
-    
+
     public boolean updatedescripcion(Pedido pedido) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -185,9 +188,9 @@ public class PedidoDAO {
             stmt.setInt(2, pedido.getIdPedido());
 
             rows = stmt.executeUpdate();
-            
+
             sw = true;
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } catch (ClassNotFoundException ex) {
@@ -199,7 +202,7 @@ public class PedidoDAO {
 
         return sw;
     }
-    
+
     public boolean actualizarEstado(Pedido pedido) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -221,9 +224,9 @@ public class PedidoDAO {
             stmt.setInt(5, pedido.getIdPedido());
 
             rows = stmt.executeUpdate();
-            
+
             sw = true;
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
         } catch (ClassNotFoundException ex) {
@@ -236,30 +239,6 @@ public class PedidoDAO {
         return sw;
     }
 
-    //SENTENCIA DELETE
-//    public int eliminar(Usuario usuario) throws InstantiationException, IllegalAccessException {
-//        Connection conn = null;
-//        PreparedStatement stmt = null;
-//        int rows = 0;//Registros afectados
-//
-//        try {
-//            Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
-//            conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-//            stmt = conn.prepareStatement(SQL_DELETE);
-//            stmt.setInt(1, cliente.getIdCliente());
-//
-//            rows = stmt.executeUpdate();
-//        } catch (ClassNotFoundException ex) {
-//            ex.printStackTrace(System.out);
-//        } catch (SQLException ex) {
-//            ex.printStackTrace(System.out);
-//        } finally {
-//            Conexion.close(stmt);
-//            Conexion.close(conn);
-//        }
-//
-//        return rows;
-//    }
     public Producto buscar(Producto producto) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -374,7 +353,9 @@ public class PedidoDAO {
                 int year = rs.getInt("yearf");
                 int month = rs.getInt("monthf");
                 String descripcion = rs.getString("descripcion");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion);
+                int day = rs.getInt("dayf");
+                int week = rs.getInt("week");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion, day, week);
             }
 
         } catch (SQLException ex) {
@@ -389,7 +370,7 @@ public class PedidoDAO {
 
         return pedido;
     }
-    
+
     public Pedido realId(Pedido pedido) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -417,7 +398,9 @@ public class PedidoDAO {
                 int year = rs.getInt("yearf");
                 int month = rs.getInt("monthf");
                 String descripcion = rs.getString("descripcion");
-                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion);
+                int day = rs.getInt("dayf");
+                int week = rs.getInt("week");
+                pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion, day, week);
             }
 
         } catch (SQLException ex) {
@@ -465,7 +448,7 @@ public class PedidoDAO {
 
         return sw;
     }
-    
+
     public boolean estado3() throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -498,8 +481,6 @@ public class PedidoDAO {
 
         return sw;
     }
-    
-    
 
     public List<Pedido> estado2(int i) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
@@ -529,7 +510,9 @@ public class PedidoDAO {
                 int year = rs.getInt("yearf");
                 int month = rs.getInt("monthf");
                 String descripcion = rs.getString("descripcion");
-                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month,descripcion);
+                int day = rs.getInt("dayf");
+                int week = rs.getInt("week");
+                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion, day, week);
                 pedidos.add(pedido);
             }
 
@@ -545,7 +528,7 @@ public class PedidoDAO {
 
         return pedidos;
     }
-    
+
     public List<Pedido> estado24(int i, int month, int year) throws InstantiationException, IllegalAccessException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -576,7 +559,9 @@ public class PedidoDAO {
                 year = rs.getInt("yearf");
                 month = rs.getInt("monthf");
                 String descripcion = rs.getString("descripcion");
-                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion);
+                int day = rs.getInt("dayf");
+                int week = rs.getInt("week");
+                Pedido pedido = new Pedido(idPedido, idCliente, fecha, estado, carrito, subtotal, total, year, month, descripcion, day, week);
                 pedidos.add(pedido);
             }
 
@@ -657,6 +642,43 @@ public class PedidoDAO {
 
         return sw;
     }
-    
-    
+
+    public Integer sells() throws InstantiationException, IllegalAccessException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        int month = 0;
+
+        try {
+            //Oracle
+            //Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
+
+            //Postgres
+            Class.forName("org.postgresql.Driver").newInstance();
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_SELLS);
+            java.util.Date date = new java.util.Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            month = localDate.getMonthValue();
+            stmt.setInt(1, month);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int sum = rs.getInt("sum");
+                month = sum;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error NULO");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return month;
+    }
+
 }
