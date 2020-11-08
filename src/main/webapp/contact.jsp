@@ -89,17 +89,18 @@
                         </div>
                       </form>
                     
-                    </div>-->
+                    </div>
 
                     <div class="col-md-6 d-flex">
                         <div id="map" class="bg-white"></div>
                     </div>
+                    -->
                 </div>
             </div>
         </section>
 
         <!-- SUSCRIPCIÓN -->
-        <!--%@include file="/Generals/subscribe.jsp" %-->
+        <%@include file="/Generals/subscribe.jsp"%>
 
         <!-- Footer -->
         <%@include file="/Generals/footer.jsp" %>

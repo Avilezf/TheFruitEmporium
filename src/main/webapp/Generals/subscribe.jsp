@@ -3,7 +3,7 @@
         <div class="row d-flex justify-content-center py-5">
             <div class="col-md-6">
                 <h2 style="font-size: 22px;" class="mb-0">Subscribe!</h2>
-                <span>Suscribete para recibir ofertas muy especiales</span>
+                <span>Despreocupate por hacer el pedido todas las semanas! Suscríbete y nosotros te enviamos tu pedido todas las semanas</span>
             </div>
             <div class="col-md-6 d-flex align-items-center">
                 <form action="#" class="subscribe-form">

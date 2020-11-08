@@ -64,7 +64,7 @@
                         </div>
                         <div class="pb-md-5">
                             <p>Somos una pequeña empresa que nos dedicamos a la venta de alimentos, frutas y verduras de calidad. Con las respectivas medidas sanitarias y un envio seguro con los mejores productos del mercado.</p>
-                            <p>Nos encontramos en esta plataforma y nos especializamos en la venta a domicilio de las frutas y verduras. </p>
+                            <p>Al comprar con nosotros está ayudando al agro local y al crecimiento de su región, debido a que los productos que consume son comprados directamente al campesino, SIN necesidad de más intermediarios. #JuntosPorElCampo</p>
                             <p><a href="${pageContext.request.contextPath}/ShoppingController?accion=shop0" class="btn btn-primary">Compra ahora</a></p>
                         </div>
                     </div>
